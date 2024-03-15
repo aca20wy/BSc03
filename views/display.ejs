@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+</head>
+
+<body>
+<h1><%= title %></h1>
+
+<% data.forEach(plant => { %>
+    <p><strong>Name:</strong> <%= plant.first_name %> <%= plant.last_name %></p>
+    <p><strong>Date of Birth: </strong> <%= plant.dob %></p>
+    <% if (plant.img) { %>
+        <img src="<%= plant.img%>" width="200" height="200">
+    <% } %>
+    <hr>
+<% }); %>
+<hr>
+<a href="/"><p>Add New Plant</p></a>
+</body>
+</html>
