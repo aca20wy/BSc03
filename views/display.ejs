@@ -9,10 +9,19 @@
 <h1><%= title %></h1>
 
 <% data.forEach(plant => { %>
-    <p><strong>Name:</strong> <%= plant.first_name %> <%= plant.last_name %></p>
-    <p><strong>Date of Birth: </strong> <%= plant.dob %></p>
-    <% if (plant.img) { %>
-        <img src="<%= plant.img%>" width="200" height="200">
+    <p><strong>Plant Name:</strong> <%= plant.plantName %> <%= plant.plantNameStatus %></p>
+    <p><strong>Description: </strong> <%= plant.description %></p>
+    <p><strong>Height: </strong> <%= plant.height %></p>
+    <p><strong>Spread: </strong> <%= plant.spread %></p>
+    <p><strong>Flowers (Y/N): </strong> <%= plant.flowers %></p>
+    <p><strong>Flower Colour: </strong> <%= plant.flowerColour %></p>
+    <p><strong>Leaves (Y/N): </strong> <%= plant.leaves %></p>
+    <p><strong>Fruit or Seeds: </strong> <%= plant.fruitSeeds %></p>
+    <p><strong>Sun Exposure: </strong> <%= plant.sunExposure %></p>
+    <p><strong>Location: </strong> <%= plant.location %></p>
+    <p><strong>Date of Sighting: </strong> <%= plant.dateOfSighting %></p>
+    <% if (plant.image) { %>
+        <img src="<%= plant.image%>" width="200" height="200">
     <% } %>
     <hr>
 <% }); %>

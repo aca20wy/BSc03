@@ -1,11 +1,21 @@
 const plantModel = require('../models/plants');
 
-exports.create = function (userData, filePath) {
+exports.create = function (plantData, filePath) {
     let plant = new plantModel( {
-        first_name: userData.first_name,
-        last_name: userData.last_name,
-        dob: userData.dob,
-        img: filePath,
+        nickname: plantData.nickname,
+        plantName: plantData.plantName,
+        plantNameStatus: plantData.plantNameStatus,
+        description: plantData.description,
+        height: plantData.height,
+        spread: plantData.spread,
+        flowers: plantData.flowers,
+        flowerColour: plantData.flowerColour,
+        leaves: plantData.leaves,
+        fruitSeeds: plantData.fruitSeeds,
+        sunExposure: plantData.sunExposure,
+        location: plantData.location,
+        dateOfSighting: plantData.dateOfSighting,
+        image: filePath,
     });
 
     return plant.save().then(plant => {
