@@ -19,10 +19,10 @@
 
 
 
-    <div class="container min-vh-100 d-flex justify-content-center align-items-center">
+    <div class="container-sm min-vh-100 d-flex justify-content-center align-items-center">
         <form class="row g-3" action="/add" method="POST" enctype="multipart/form-data">
             <div class="col-12">
-                <h1 class="display-4 fw-normal text-body-emphasis">Add a Plant</h1>
+                <h1 class="display-4 fw-normal text-body-emphasis">Add a Plant Sighting</h1>
             </div>
             <div class="col-md-8">
                 <div class="form-floating">
@@ -118,7 +118,7 @@
                     <label for="dateOfSighting">Date of Sighting:</label>
                 </div>
             </div>
-            <div class="col-4">
+            <div class="col-6">
                 <div class="form-floating">
                     <input type="text" class="form-control" id="nickname" name="nickname" required>
                     <label for="nickname">Nickname:</label>
@@ -129,8 +129,6 @@
             </div>
         </form>
     </div>
-
-    <a href="/display"><p>View All Plants</p></a>
 
     <%- include('./partials/footer.ejs') -%>
 
