@@ -26,37 +26,37 @@
             </div>
             <div class="col-md-8">
                 <div class="form-floating">
-                    <input type="text" class="form-control" id="plantName" name="plant_name" required>
-                    <label for="plantName">Plant Name:</label>
+                    <input type="text" class="form-control" id="name" name="name" required>
+                    <label for="name">Plant Name:</label>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="form-floating">
-                    <select class="form-select" id="plantNameStatus" name="plantNameStatus" required>
+                    <select class="form-select" id="nameStatus" name="name_status" required>
                         <option selected>Uncompleted</option>
                         <option>Completed</option>
                     </select>
-                    <label for="plantNameStatus">Plant Name Status:</label>
+                    <label for="nameStatus">Plant Name Status:</label>
                 </div>
             </div>
             <div class="col-12">
                 <div class="form-floating">
-                    <textarea class="form-control" placeholder="Leave a description of the plant here" id="description" required></textarea>
+                    <textarea class="form-control" placeholder="Leave a description of the plant here" id="description" name="description" required></textarea>
                     <label for="description">Plant Description...</label>
                 </div>
             </div>
             <div class="col-12">
-                <input type="file" class="form-control" id="image" name="image" accept="image/*" required>
+                <input type="file" class="form-control" id="image" name="img" accept="image/*" required>
             </div>
             <div class="col-md-6">
                 <div class="form-floating">
-                    <input type="number" class="form-control" id="height" name="height" required>
+                    <input type="number" step="0.01" class="form-control" id="height" name="height" required>
                     <label for="height">Plant Height (cm):</label>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-floating">
-                    <input type="number" class="form-control" id="spread" name="spread" required>
+                    <input type="number" step="0.01" class="form-control" id="spread" name="spread" required>
                     <label for="spread">Plant Spread (cm):</label>
                 </div>
             </div>
@@ -82,13 +82,13 @@
             </div>
             <div class="col-md-4">
                 <div class="form-floating">
-                    <input type="text" class="form-control" id="flowerColour" name="flowerColour" required>
+                    <input type="text" class="form-control" id="flowerColour" name="flower_colour" required>
                     <label for="flowerColour">Flower Colour:</label>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-floating">
-                    <select class="form-select" id="fruitSeeds" name="fruitSeeds" required>
+                    <select class="form-select" id="fruitSeeds" name="fruit_seeds" required>
                         <option selected>None</option>
                         <option>Fruit</option>
                         <option>Seeds</option>
@@ -98,7 +98,7 @@
             </div>
             <div class="col-md-6">
                 <div class="form-floating">
-                    <select class="form-select" id="sunExposure" name="sunExposure" required>
+                    <select class="form-select" id="sunExposure" name="sun_exposure" required>
                         <option selected>Full Sun</option>
                         <option>Partial Sun / Shade</option>
                         <option>Full Shade</option>
@@ -114,7 +114,7 @@
             </div>
             <div class="col-md-4">
                 <div class="form-floating">
-                    <input type="date" class="form-control" id="dateOfSighting" name="dos" required>
+                    <input type="date" class="form-control" id="dateOfSighting" name="date_of_sighting" required>
                     <label for="dateOfSighting">Date of Sighting:</label>
                 </div>
             </div>

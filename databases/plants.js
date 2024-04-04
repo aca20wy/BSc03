@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 
+//database name here
 const mongoDB = 'mongodb://localhost:27017/plants';
 let connection;
 

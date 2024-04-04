@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-let plants = require('../controllers/plants')
+let posts = require('../controllers/posts')
 
 let multer = require('multer');
 
@@ -22,18 +22,18 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'New Plant Form' });
 });
 
-router.post('/add', upload.single('myImg'), function (req, res, next) {
-  let plantData = req.body;
+router.post('/add', upload.single('img'), function (req, res, next) {
+  let postData = req.body;
   let filePath = req.file.path;
-  let result = plants.create(plantData, filePath);
+  let result = posts.create(postData, filePath);
   console.log(result);
   res.redirect('/');
 });
 
 router.get('/display', function(req, res, next) {
-  let result = plants.getAll();
-  result.then(plants => {
-    let data = JSON.parse(plants);
+  let result = posts.getAll();
+  result.then(posts => {
+    let data = JSON.parse(posts);
     console.log(data.length);
     res.render('display', {title: 'View All Plants', data: data});
   });
