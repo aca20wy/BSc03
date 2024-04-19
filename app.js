@@ -3,12 +3,16 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var bodyParser = require("body-parser");
 
-var indexRouter = require('./routes/index');
+
+var addRouter = require('./routes/add');
 var usersRouter = require('./routes/users');
+var indexRouter = require('./routes/index');
+
 //var loginRouter = require('./routes/login');
 //var registerRouter = require('./routes/register');
-const bodyParser = require("body-parser");
+
 
 var app = express();
 
@@ -26,6 +30,7 @@ app.use('/public/images/uploads', express.static(path.join(__dirname, 'public/im
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/add', addRouter);
 //app.use('/login', loginRouter);
 //app.use('/register', registerRouter);
 

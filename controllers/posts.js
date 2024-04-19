@@ -29,6 +29,7 @@ exports.create = function (postData, filePath) {
 
         return JSON.stringify(post);
     }).catch(err => {
+        console.log("data error")
         console.log(err);
 
         return null;
