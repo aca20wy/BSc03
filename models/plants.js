@@ -1,11 +1,10 @@
 let mongoose = require('mongoose');
-
 let Schema = mongoose.Schema;
 
-let PostSchema = new Schema(
+let PlantSchema = new Schema(
     {
         name: {type: String, required: true, max: 100},
-        name_status: {type: String, required: true, max: 25},
+        nameStatus: {type: String, required: true, max: 25},
         description: {type: String, required: true, max: 500},
 
         img: {type: String},
@@ -15,19 +14,20 @@ let PostSchema = new Schema(
 
         leaves: {type: String, required: true, max: 100},
         flowers: {type: String, required: true, max: 100},
-        flower_colour: {type: String, required: false, max: 100},
+        flowerColour: {type: String, required: false, max: 100},
 
-        fruit_seeds: {type: String, required: true, max: 25},
-        sun_exposure: {type: String, required: true, max: 25},
+        fruitSeeds: {type: String, required: true, max: 25},
+        sunExposure: {type: String, required: true, max: 25},
 
         location: {type: String, required: true, max: 250},
-        date_of_sighting: {type: Date},
+        dateOfSighting: {type: Date},
         nickname: {type: String, required: true, max: 100},
     }
 );
 
-PostSchema.set('toObject', {getters: true, virtuals: true});
+PlantSchema.set('toObject', { getters: true, virtuals: true });
 
-let Post = mongoose.model('post', PostSchema);
+// Create the mongoose model 'Plant' based on the defined schema
+let Plant = mongoose.model('plant', PlantSchema);
 
-module.exports = Post;
+module.exports = Plant;
