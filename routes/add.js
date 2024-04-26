@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var posts = require('../controllers/posts');
+var plants = require('../controllers/plants');
 
 var multer = require('multer');
 
@@ -24,11 +24,11 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/', upload.single('img'), function (req, res, next) {
-  let postData = req.body;
+  let plantData = req.body;
   let filePath = req.file.path;
   console.log("test")
-  let result = posts.create(postData, filePath);
-  console.log(postData);
+  let result = plants.create(plantData, filePath);
+  console.log(plantData);
   console.log(result);
   res.redirect('/');
 });

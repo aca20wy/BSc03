@@ -8,27 +8,27 @@
 <body>
 <h1><%= title %></h1>
 
-<% data.forEach(post => { %>
-    <p><strong>Plant Name:</strong> <%= post.name %> (<%= post.name_status %>)</p>
-    <p><strong>Description: </strong> <%= post.description %></p>
+<% data.forEach(plant => { %>
+    <p><strong>Plant Name:</strong> <%= plant.name %> (<%= plant.nameStatus %>)</p>
+    <p><strong>Description: </strong> <%= plant.description %></p>
 
-    <% if (post.image) { %>
-        <img src="<%= post.img%>" width="200" height="200">
+    <% if (plant.image) { %>
+        <img src="<%= plant.img%>" width="200" height="200">
     <% } %>
 
-    <p><strong>Height: </strong> <%= post.height %></p>
-    <p><strong>Spread: </strong> <%= post.spread %></p>
+    <p><strong>Height: </strong> <%= plant.height %></p>
+    <p><strong>Spread: </strong> <%= plant.spread %></p>
 
-    <p><strong>Leaves (Y/N): </strong> <%= post.leaves %></p>
-    <p><strong>Flowers (Y/N): </strong> <%= post.flowers %></p>
-    <p><strong>Flower Colour: </strong> <%= post.flower_colour %></p>
+    <p><strong>Leaves (Y/N): </strong> <%= plant.leaves %></p>
+    <p><strong>Flowers (Y/N): </strong> <%= plant.flowers %></p>
+    <p><strong>Flower Colour: </strong> <%= plant.flowerColour %></p>
 
-    <p><strong>Fruit or Seeds: </strong> <%= post.fruit_seeds %></p>
-    <p><strong>Sun Exposure: </strong> <%= post.sun_exposure %></p>
+    <p><strong>Fruit or Seeds: </strong> <%= plant.fruitSeeds %></p>
+    <p><strong>Sun Exposure: </strong> <%= plant.sunExposure %></p>
 
-    <p><strong>Location: </strong> <%= post.location %></p>
-    <p><strong>Date of Sighting: </strong> <%= post.date_of_sighting %></p>
-    <p><strong>Plant Poster:</strong> <%= post.nickname %></p>
+    <p><strong>Location: </strong> <%= plant.location %></p>
+    <p><strong>Date of Sighting: </strong> <%= plant.dateOfSighting %></p>
+    <p><strong>Plant Poster:</strong> <%= plant.nickname %></p>
 
     <hr>
 <% }); %>
