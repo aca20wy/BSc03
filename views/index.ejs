@@ -1,38 +1,86 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><%= title %></title>
     <link rel="stylesheet" href="/stylesheets/style.css" />
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <style>
+        .plant-card img {
+            height: 300px;
+            object-fit: cover; /* Covers the designated area without being distorted */
+        }
+        .container-top {
+            padding-top: 2rem;
+            padding-bottom: 2rem;
+        }
+        .add-plant-button {
+            text-align: right;
+        }
+        header {
+            margin-bottom: 2rem;
+        }
+        footer {
+            margin-top: 2rem;
+            clear: both;
+        }
+    </style>
 </head>
 
 <body>
-<h1><%= title %></h1>
+    <!-- HEADER -->
+    <%- include('./partials/header.ejs') -%>
 
-<% data.forEach(post => { %>
-    <p><strong>Plant Name:</strong> <%= post.name %> (<%= post.name_status %>)</p>
-    <p><strong>Description: </strong> <%= post.description %></p>
+    <div class="container">
+        <!-- Header Section -->
+        <div class="row">
+            <div class="col-12">
+                <h1 class="mb-4 text-center"><%= title %></h1>
+            </div>
+        </div>
 
-    <% if (post.image) { %>
-        <img src="<%= post.img%>" width="200" height="200">
-    <% } %>
+        <!-- Add New Plant Button -->
+        <div class="row container-top">
+            <div class="col-12 add-plant-button">
+                <a href="/add" class="btn">Add New Plant</a>
+            </div>
+        </div>
 
-    <p><strong>Height: </strong> <%= post.height %></p>
-    <p><strong>Spread: </strong> <%= post.spread %></p>
+        <!-- Plants Display Grid -->
+        <div class="row row-cols-1 row-cols-md-4 g-4">
+            <% data.forEach(plant => { %>
+                <div class="col">
+                    <div class="card h-100 plant-card">
+                        <!-- Plant Image -->
+                        <a href="/plant/<%= plant._id %>">
+                            <% if (plant.img) { %>
+                                <img src="<%= plant.img %>" class="card-img-top" alt="Image of <%= plant.name %>">
+                            <% } else { %>
+                                <img src="/placeholder-image.jpg" class="card-img-top" alt="Placeholder image">
+                            <% } %>
+                        </a>
+                        <!-- Plant Name -->
+                        <div class="card-body">
+                            <h5 class="card-title text-center">
+                                <a href="/plant/<%= plant._id %>" class="text-decoration-none text-dark"><%= plant.name %></a>
+                            </h5>
+                        </div>
+                    </div>
+                </div>
+            <% }); %>
+        </div>
+    </div>
 
-    <p><strong>Leaves (Y/N): </strong> <%= post.leaves %></p>
-    <p><strong>Flowers (Y/N): </strong> <%= post.flowers %></p>
-    <p><strong>Flower Colour: </strong> <%= post.flower_colour %></p>
+    <!-- FOOTER -->
+    <%- include('./partials/footer.ejs') -%>
 
-    <p><strong>Fruit or Seeds: </strong> <%= post.fruit_seeds %></p>
-    <p><strong>Sun Exposure: </strong> <%= post.sun_exposure %></p>
-
-    <p><strong>Location: </strong> <%= post.location %></p>
-    <p><strong>Date of Sighting: </strong> <%= post.date_of_sighting %></p>
-    <p><strong>Plant Poster:</strong> <%= post.nickname %></p>
-
-    <hr>
-<% }); %>
-<hr>
-<a href="/add"><p>Add New Plant</p></a>
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
+    </script>
 </body>
 </html>
