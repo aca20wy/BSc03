@@ -1,12 +1,12 @@
 var express = require('express');
 var router = express.Router();
-var posts = require('../controllers/posts');
+var plantsController = require('../controllers/plants');
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
-    let result = posts.getAll();
-    result.then(posts => {
-        let data = JSON.parse(posts);
+    let result = plantsController.getAll();
+    result.then(plants => {
+        let data = JSON.parse(plants);
         console.log(data);
         res.render('index', {title: 'View All Plants', data: data});
     });
