@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var plants = require('../controllers/plants');
+var plantsController = require('../controllers/plants');
 
 var multer = require('multer');
 
@@ -27,21 +27,10 @@ router.post('/', upload.single('img'), function (req, res, next) {
   let plantData = req.body;
   let filePath = req.file.path;
   console.log("test")
-  let result = plants.create(plantData, filePath);
+  let result = plantsController.create(plantData, filePath);
   console.log(plantData);
   console.log(result);
   res.redirect('/');
 });
-
-// router.get('/plant/:id', function(req, res) {
-//   let plantId = req.params.id;
-//   Post.findById(plantId)
-//       .then(plantDetails => {
-//         res.render('plant_details', { plant: plantDetails });
-//       })
-//       .catch(err => {
-//         res.status(500).send(err.message);
-//       });
-// });
 
 module.exports = router;
