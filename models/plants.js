@@ -1,6 +1,13 @@
 let mongoose = require('mongoose');
 let Schema = mongoose.Schema;
 
+let ChatSchema = new Schema(
+    {
+        chatUsername: {type: String, required: true, max: 50},
+        chatText: {type: String, required: true, max: 300}
+    }
+);
+
 let PlantSchema = new Schema(
     {
         name: {type: String, required: true, max: 100},
@@ -19,9 +26,16 @@ let PlantSchema = new Schema(
         fruitSeeds: {type: String, required: true, max: 25},
         sunExposure: {type: String, required: true, max: 25},
 
-        location: {type: String, required: true, max: 250},
-        dateOfSighting: {type: Date},
-        nickname: {type: String, required: true, max: 100},
+            location: {type: String, required: true, max: 250},
+            dateOfSighting: {type: Date},
+
+            // User identifier
+            username: {type: String, required: true, max: 100},
+
+            // Suggested plant names
+            suggestedNames: {type: Array, required: false, max: 25},
+
+            chats: [ChatSchema]
     }
 );
 

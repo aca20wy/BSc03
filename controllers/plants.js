@@ -22,18 +22,20 @@ exports.create = function (plantData, filePath) {
         
         location: plantData.location,
         dateOfSighting: plantData.dateOfSighting,
-        nickname: plantData.nickname,
+        username: plantData.username,
+
+        suggestedNames: plantData.suggestedNames
     });
 
     // save the plant to the database and handle success/failure
     return plant.save()
         .then(plant => {
-        console.log(plant);
-        return JSON.stringify(plant);
-    }).catch(err => {
-        console.log("Failed to save data")
-        console.log(err);
-        return null;
+            console.log(plant);
+            return JSON.stringify(plant);
+        }).catch(err => {
+            console.log("Failed to save data")
+            console.log(err);
+            return null;
     });
 };
 
@@ -48,3 +50,23 @@ exports.getAll = function () {
         return null;
     });
 };
+
+// update plant by adding a new chat to 'chats' array
+exports.saveChat = function(chatData) {
+    return plantModel.findByIdAndUpdate(
+        chatData.plantId,
+        { $push: { chats: { chatUsername: chatData.chatUsername, chatText: chatData.chatText } } },
+        { new: true, safe: true, upsert: true }
+    )
+        .then(updatedPlant => {
+            console.log('updated:' + updatedPlant);
+            // return the updated plant as a JSON string
+            return JSON.stringify(updatedPlant);
+        })
+        .catch(err => {
+            console.error(err);
+            return null;
+        });
+};
+
+
