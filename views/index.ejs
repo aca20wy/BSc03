@@ -14,75 +14,75 @@
 </head>
 
 <body>
-<!-- Username Modal -->
-<div class="modal fade" id="usernameModal" tabindex="-1" aria-labelledby="usernameModalLabel" aria-modal="true" role="dialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="usernameModalLabel">Set Your Username</h5>
-            </div>
-            <div class="modal-body">
-                <form id="usernameForm">
-                    <div class="mb-3">
-                        <label for="username" class="form-label">Username</label>
-                        <input type="text" class="form-control" id="username" required>
-                    </div>
-                    <button type="submit" class="btn submit-btn" id="usernameSubmit">Continue</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- HEADER -->
-<%- include('./partials/header.ejs') -%>
-
-<div class="container">
-    <!-- Header Section -->
-    <div class="row">
-        <div class="col-12">
-            <h1 class="mb-4 text-center"><%= title %></h1>
-        </div>
-    </div>
-
-    <!-- Add New Plant Button -->
-    <div class="row container-top">
-        <div class="col-12 add-plant-button">
-            <a href="/add" class="btn">Add New Plant</a>
-        </div>
-    </div>
-
-    <!-- Plants Display Grid -->
-    <div class="row row-cols-1 row-cols-md-4 g-4">
-        <% data.forEach(plant => { %>
-            <div class="col">
-                <div class="card h-100 plant-card">
-                    <!-- Plant Image -->
-                    <a href="/plant/<%= plant._id %>">
-                        <% if (plant.img) { %>
-                            <img src="<%= plant.img %>" class="card-img-top" alt="Image of <%= plant.name %>">
-                        <% } else { %>
-                            <img src="/placeholder-image.jpg" class="card-img-top" alt="Placeholder image">
-                        <% } %>
-                    </a>
-                    <!-- Plant Name -->
-                    <div class="card-body">
-                        <h5 class="card-title text-center">
-                            <a href="/plant/<%= plant._id %>" class="text-decoration-none text-dark"><%= plant.name %></a>
-                        </h5>
-                    </div>
+    <!-- Username Modal -->
+    <div class="modal fade" id="usernameModal" tabindex="-1" aria-labelledby="usernameModalLabel" aria-modal="true" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="usernameModalLabel">Set Your Username</h5>
+                </div>
+                <div class="modal-body">
+                    <form id="usernameForm">
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Username</label>
+                            <input type="text" class="form-control" id="username" required>
+                        </div>
+                        <button type="submit" class="btn submit-btn" id="usernameSubmit">Continue</button>
+                    </form>
                 </div>
             </div>
-        <% }); %>
+        </div>
     </div>
-</div>
 
-<!-- FOOTER -->
-<%- include('./partials/footer.ejs') -%>
+    <!-- HEADER -->
+    <%- include('./partials/header.ejs') -%>
 
-<!-- Bootstrap Bundle with Popper -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
-</script>
+    <div class="container">
+        <!-- Header Section -->
+        <div class="row">
+            <div class="col-12">
+                <h1 class="mb-4 text-center"><%= title %></h1>
+            </div>
+        </div>
+
+        <!-- Add New Plant Button -->
+        <div class="row container-top">
+            <div class="col-12 add-plant-button">
+                <a href="/add" class="btn">Add New Plant</a>
+            </div>
+        </div>
+
+        <!-- Plants Display Grid -->
+        <div class="row row-cols-1 row-cols-md-4 g-4">
+            <% data.forEach(plant => { %>
+                <div class="col">
+                    <div class="card h-100 plant-card">
+                        <!-- Plant Image -->
+                        <a href="/plant/<%= plant._id %>">
+                            <% if (plant.img) { %>
+                                <img src="<%= plant.img %>" class="card-img-top" alt="Image of <%= plant.name %>">
+                            <% } else { %>
+                                <img src="/placeholder-image.jpg" class="card-img-top" alt="Placeholder image">
+                            <% } %>
+                        </a>
+                        <!-- Plant Name -->
+                        <div class="card-body">
+                            <h5 class="card-title text-center">
+                                <a href="/plant/<%= plant._id %>" class="text-decoration-none text-dark"><%= plant.name %></a>
+                            </h5>
+                        </div>
+                    </div>
+                </div>
+            <% }); %>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <%- include('./partials/footer.ejs') -%>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
+    </script>
 </body>
 </html>

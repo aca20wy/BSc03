@@ -9,35 +9,11 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+    <link rel="stylesheet" href="/stylesheets/plant.css">
     <script>
         var plantId = "<%= plant._id %>";  // This makes plantId a global variable
     </script>
-
     <script type="module" src="/javascripts/chatHandler.js"></script>
-
-
-    <style>
-        .detail-view {
-            display: flex;
-            margin-top: 20px;
-        }
-        .plant-image {
-            flex: 1;
-            max-width: 50%;
-        }
-        .plant-details {
-            flex: 1;
-            padding-left: 20px;
-        }
-        .suggestion-form, .delete-form {
-            margin-top: 20px;
-        }
-        .submit-btn {
-            background-color: #FAEDCD;
-        }
-    </style>
-
-
 </head>
 
 <body>
@@ -45,6 +21,14 @@
     <%- include('./partials/header.ejs') -%>
 
     <div class="container">
+        <!-- Plant Name and Status -->
+        <div class="row">
+            <div class="col-12 plant-name-header">
+                <h1 class="display-4"><%= plant.name %></h1>
+                <p class="text-muted"><%= plant.nameStatus %></p>
+            </div>
+        </div>
+
         <div class="row align-items-start detail-view">
             <!-- Plant Image -->
             <div class="col-md-6 plant-image">
@@ -52,95 +36,29 @@
             </div>
 
             <!-- Plant Details -->
-            <div class="col-md-4 plant-details">
-                <h1><%= plant.name %> (<%= plant.nameStatus %>)</h1>
-                <p><strong>Date and Time Seen:</strong> <%= plant.dateOfSighting.toDateString() %></p>
-                <p><strong>Location:</strong> <%= plant.location %></p>
-                <p><strong>Description:</strong> <%= plant.description %></p>
-                <p><strong>Height:</strong> <%= plant.height %> cm</p>
-                <p><strong>Spread:</strong> <%= plant.spread %> cm</p>
-                <p><strong>Leaves:</strong> <%= plant.leaves %></p>
-                <p><strong>Flowers:</strong> <%= plant.flowers %></p>
-                <p><strong>Flower Colour:</strong> <%= plant.flowerColour %></p>
-                <p><strong>Fruit Seeds:</strong> <%= plant.fruitSeeds %></p>
-                <p><strong>Sun Exposure:</strong> <%= plant.sunExposure %></p>
-                <p><strong>Identification Status:</strong> <%= plant.nameStatus %></p>
-                <p><strong>DBPedia Link:</strong> <a href="<%= plant.dbPediaUri %>">More Info</a></p>
-            </div>
-
-            <!-- Buttons for Suggestion Features -->
-            <div class="col-md-2 list-group list-group-flush suggestion-buttons text-right">
-                <button class="list-group-item list-group-item-action mb-2" data-bs-toggle="modal" data-bs-target="#suggestModal">Suggest Name</button>
-                <button class="list-group-item list-group-item-action mb-2" data-bs-toggle="modal" data-bs-target="#viewModal">View Suggestions</button>
-                <button class="list-group-item list-group-item-action" data-bs-toggle="modal" data-bs-target="#approveModal">Approve</button>
-            </div>
-
-            <!-- Suggest Name Modal -->
-            <div class="modal fade" id="suggestModal" tabindex="-1" aria-labelledby="suggestModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="suggestModalLabel">Suggest a New Name</h5>
-                            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <form id="suggestForm">
-                                <div class="mb-3">
-                                    <input type="text" class="form-control" id="suggestionName" placeholder="Enter a new name" required>
-                                </div>
-                                <button type="submit" class="btn submit-btn">Submit</button>
-                                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
-                            </form>
-                        </div>
-                    </div>
+            <div class="col-md-6 plant-details mb-5">
+                <div class="list-group list-group-flush">
+                    <div class="list-group-item"><strong>Date and Time Seen:</strong> <%= plant.dateOfSighting.toDateString() %></div>
+                    <div class="list-group-item"><strong>Location:</strong> <%= plant.location %></div>
+                    <div class="list-group-item"><strong>Description:</strong> <%= plant.description %></div>
+                    <div class="list-group-item"><strong>Height:</strong> <%= plant.height %> cm</div>
+                    <div class="list-group-item"><strong>Spread:</strong> <%= plant.spread %> cm</div>
+                    <div class="list-group-item"><strong>Leaves:</strong> <%= plant.leaves %></div>
+                    <div class="list-group-item"><strong>Flowers:</strong> <%= plant.flowers %></div>
+                    <div class="list-group-item"><strong>Flower Colour:</strong> <%= plant.flowerColour %></div>
+                    <div class="list-group-item"><strong>Fruit Seeds:</strong> <%= plant.fruitSeeds %></div>
+                    <div class="list-group-item"><strong>Sun Exposure:</strong> <%= plant.sunExposure %></div>
+<!--                    <a href="<%= plant.dbPediaUri %>" class="list-group-item list-group-item-action">More Info on DBPedia</a>-->
                 </div>
             </div>
+        </div>
 
-            <!-- View Suggestions Modal -->
-            <div class="modal fade" id="viewSuggestionsModal" tabindex="-1" aria-labelledby="viewSuggestionsModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="viewSuggestionsModalLabel">View Suggestions</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <ul id="suggestionsList" class="list-group">
-                                <!-- Suggestions will be loaded here dynamically -->
-                            </ul>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        </div>
-                    </div>
-                </div>
+        <!-- DBPedia Section -->
+        <div class="row">
+            <div class="col-12 dbpedia-section">
+                <h5>Additional Information</h5>
+                <p>more detailed information about this plant: <a href="<%= plant.dbPediaUri %>" class="dbpedia-link">DBPedia</a>.</p>
             </div>
-
-            <!-- Approve Suggestions Modal -->
-            <div class="modal fade" id="approveSuggestionsModal" tabindex="-1" aria-labelledby="approveSuggestionsModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="approveSuggestionsModalLabel">Approve Suggestions</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form id="approveSuggestionForm">
-                                <div class="mb-3">
-                                    <label for="suggestionSelect" class="form-label">Select a suggestion to approve:</label>
-                                    <select class="form-select" id="suggestionSelect">
-                                        <!-- Options will be loaded here dynamically -->
-                                    </select>
-                                </div>
-                                <button type="submit" class="btn btn-primary">Approve</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
         </div>
 
         <!-- Chat Section -->
