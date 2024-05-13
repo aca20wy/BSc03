@@ -1,0 +1,15 @@
+.plant-card img {
+    height: 300px;
+    object-fit: cover; /* Covers the designated area without being distorted */
+}
+.container-top {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+.add-plant-button {
+    text-align: right;
+}
+
+#usernameSubmit {
+    background-color: #FAEDCD;
+}
