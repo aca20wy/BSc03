@@ -1,3 +1,5 @@
+// Retrieve the username from local storage
+const username = localStorage.getItem('username');
 let socket = io();
 
 /**
@@ -5,20 +7,20 @@ let socket = io();
  * it initialises the interface and the expected socket messages
  * plus the associated actions
  */
-function init() {
+document.addEventListener('DOMContentLoaded', function() {
+    // join the chat room
+    socket.emit('create or join', plantId, username);
 
-    // Automatically join the chat room
-    socket.emit('create or join', plantId, null);
-
-    // socket.on('joined', function(username) {
-    //    addNewChat('<strong>' + username + ':</strong>' + 'joined the chat');
-    // });
-
-    socket.on('chat', function (plantId, chatUsername, chatText) {
+    socket.on('chat', function(plantId, chatUsername, chatText) {
         console.log(chatText);
-        addNewChat('<strong>' + chatUsername + ': </strong>' + chatText);
+        addNewChat(`<strong>${chatUsername}:</strong> ${chatText}`);
     });
-}
+
+    document.getElementById('chatForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        sendChat();
+    });
+});
 
 /**
  * called when the Send button is pressed. It gets the text to send from the interface
@@ -26,9 +28,9 @@ function init() {
  */
 function sendChat() {
     let chatText = document.getElementById('chatText').value;
-    let chatUsername = document.getElementById('chatUsername').value;
-    socket.emit('chat', plantId, chatUsername, chatText);
+    socket.emit('chat', plantId, username, chatText);
     console.log('send chat');
+    document.getElementById('chatText').value = '';
 }
 
 /**
@@ -38,10 +40,8 @@ function sendChat() {
 function addNewChat(chatContent) {
     let chatHistory = document.getElementById('chatHistory');
     let div = document.createElement('div');
-    console.log('new chat added:' + chatContent);
+    // console.log('new chat added:' + chatContent);
     div.innerHTML = chatContent;
     chatHistory.appendChild(div);
-    document.getElementById('chatUsername').value = '';
-    document.getElementById('chatText').value = '';
 }
 
