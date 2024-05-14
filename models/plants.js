@@ -26,16 +26,17 @@ let PlantSchema = new Schema(
         fruitSeeds: {type: String, required: true, max: 25},
         sunExposure: {type: String, required: true, max: 25},
 
-            location: {type: String, required: true, max: 250},
-            dateOfSighting: {type: Date},
+        location: {type: String, required: true, max: 250},
+        dateOfSighting: {type: Date},
 
-            // User identifier
-            username: {type: String, required: true, max: 100},
+        // User identifier
+        username: {type: String, required: true, max: 100},
 
-            // Suggested plant names
-            suggestedNames: {type: Array, required: false, max: 25},
+        // Suggested plant names
+        suggestedNames: {type: Array, required: false, max: 25},
 
-            chats: [ChatSchema]
+        // Array of chats
+        chats: [ChatSchema]
     }
 );
 

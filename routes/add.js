@@ -26,11 +26,17 @@ router.get('/', function(req, res, next) {
 router.post('/', upload.single('img'), function (req, res, next) {
   let plantData = req.body;
   let filePath = req.file.path;
-  console.log("test")
-  let result = plantsController.create(plantData, filePath);
-  console.log(plantData);
-  console.log(result);
-  res.redirect('/');
+  plantData.username = req.body.username;
+
+  let result = plantsController.create(plantData, filePath)
+      .then(result => {
+        console.log('Plant added:', result);
+        res.redirect('/');
+      })
+      .catch(error => {
+        console.error('Error adding plant:', error);
+        res.status(500).send(error);
+      });
 });
 
 module.exports = router;

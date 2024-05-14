@@ -16,6 +16,5 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     } else {
         console.log('Username already set:', storedUsername);
-        // Perform any additional setup or operations that require the username
     }
 });
