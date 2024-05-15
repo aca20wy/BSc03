@@ -1,0 +1,11 @@
+{
+  "lang": "en-uk",
+  "name": "Plant Recognition app",
+  "short_name": "Newest Plants",
+  "description": "Plant info storage app",
+  "start_url": "/",
+  "background_color": "#2f3d58",
+  "theme_color": "#2f3d58",
+  "orientation": "any",
+  "display": "standalone"
+}

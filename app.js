@@ -6,7 +6,7 @@ var logger = require('morgan');
 var bodyParser = require("body-parser");
 
 
-var addRouter = require('./routes/add');
+//var addRouter = require('./routes/add');
 var usersRouter = require('./routes/users');
 var indexRouter = require('./routes/index');
 var plantRouter = require('./routes/plant');
@@ -22,16 +22,28 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+//app.use(express.json());
+//app.use(express.urlencoded({ limit:'10'}));
+
+// Express 3.0
+//app.use(express.json({ limit: '10mb' }));
+//app.use(express.urlencoded({ limit: '10mb' }));
+
+// Express 4.0
+app.use(bodyParser.json({ limit: '50mb' }));
+app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
+
+
+
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(bodyParser.urlencoded({ extended: false }));
+//app.use(bodyParser.urlencoded({ extended: true, limit: '10mb' }));
+//app.use(bodyParser.urlencoded({ extended: false }));
 app.use('/public/images/uploads', express.static(path.join(__dirname, '/public/images/uploads')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/add', addRouter);
+//app.use('/add', addRouter);
 app.use('/plant', plantRouter);
 //app.use('/login', loginRouter);
 //app.use('/register', registerRouter);

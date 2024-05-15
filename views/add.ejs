@@ -9,132 +9,138 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="manifest" href="/manifest.json">
+
 </head>
 
 <body>
-    <!-- HEADER -->
-    <%- include('./partials/header.ejs') -%>
 
-    <div class="container-sm min-vh-100 d-flex justify-content-center align-items-center">
-        <form class="row g-3" action="/add" method="POST" enctype="multipart/form-data">
-            <div class="col-12">
-                <h1 class="display-4 fw-normal text-body-emphasis">Add a Plant Sighting</h1>
-            </div>
-            <div class="col-md-8">
-                <div class="form-floating">
-                    <input type="text" class="form-control" id="name" name="name" required>
-                    <label for="name">Plant Name:</label>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-floating">
-                    <select class="form-select" id="nameStatus" name="nameStatus" required>
-                        <option selected>In-progress</option>
-                        <option>Completed</option>
-                    </select>
-                    <label for="nameStatus">Plant Name Status:</label>
-                </div>
-            </div>
-            <div class="col-12">
-                <div class="form-floating">
-                    <textarea class="form-control" placeholder="Leave a description of the plant here" id="description" name="description" required></textarea>
-                    <label for="description">Plant Description...</label>
-                </div>
-            </div>
-            <div class="col-12">
-                <input type="file" class="form-control" id="image" name="img" accept="image/*" required>
-            </div>
-            <div class="col-md-6">
-                <div class="form-floating">
-                    <input type="number" step="0.01" class="form-control" id="height" name="height" required>
-                    <label for="height">Plant Height (cm):</label>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-floating">
-                    <input type="number" step="0.01" class="form-control" id="spread" name="spread" required>
-                    <label for="spread">Plant Spread (cm):</label>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-floating">
-                    <select class="form-select" id="leaves" name="leaves" required>
-                        <option selected>Yes</option>
-                        <option>No</option>
-                        <option>Unknown</option>
-                    </select>
-                    <label for="leaves">Leaves:</label>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-floating">
-                    <select class="form-select" id="flowers" name="flowers" required>
-                        <option selected>Yes</option>
-                        <option>No</option>
-                        <option>Unknown</option>
-                    </select>
-                    <label for="flowers">Flowers:</label>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-floating">
-                    <input type="text" class="form-control" id="flowerColour" name="flowerColour" required>
-                    <label for="flowerColour">Flower Colour:</label>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-floating">
-                    <select class="form-select" id="fruitSeeds" name="fruitSeeds" required>
-                        <option selected>None</option>
-                        <option>Fruit</option>
-                        <option>Seeds</option>
-                    </select>
-                    <label for="fruitSeeds">Fruit or Seeds:</label>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-floating">
-                    <select class="form-select" id="sunExposure" name="sunExposure" required>
-                        <option selected>Full Sun</option>
-                        <option>Partial Sun / Shade</option>
-                        <option>Full Shade</option>
-                    </select>
-                    <label for="sunExposure">Sun Exposure:</label>
-                </div>
-            </div>
-            <div class="col-md-8">
-                <div class="form-floating">
-                    <input type="text" class="form-control" id="location" name="location" required>
-                    <label for="location">Location:</label>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-floating">
-                    <input type="date" class="form-control" id="dateOfSighting" name="dateOfSighting" required>
-                    <label for="dateOfSighting">Date of Sighting:</label>
-                </div>
-            </div>
+<%- include('./partials/header.ejs') -%>
 
-            <!-- Hidden field for username -->
-            <input type="hidden" id="username" name="username" value="">
 
-            <div class="col-12">
-                <button type="submit" class="btn" style="background: #E9EDC9">Submit</button>
+<div class="container-sm min-vh-100 d-flex justify-content-center align-items-center">
+    <form class="row g-3" id="add_form" enctype="multipart/form-data">
+        <div class="col-12">
+            <h1 class="display-4 fw-normal text-body-emphasis">Add a Plant Sighting</h1>
+        </div>
+        <div class="col-md-8">
+            <div class="form-floating">
+                <input type="text" class="form-control" id="name" name="name" required>
+                <label for="name">Plant Name:</label>
             </div>
-        </form>
-    </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-floating">
+                <select class="form-select" id="nameStatus" name="nameStatus" required>
+                    <option value="In-progress" selected>In-progress</option>
+                    <option value="Completed">Completed</option>
+                </select>
+                <label for="nameStatus">Plant Name Status:</label>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="form-floating">
+                <textarea class="form-control" placeholder="Leave a description of the plant here" id="description" name="description" required></textarea>
+                <label for="description">Plant Description...</label>
+            </div>
+        </div>
+        <div class="col-12">
+            <input type="file" class="form-control" id="image" name="img" accept="image/*" required>
+        </div>
+        <div class="col-md-6">
+            <div class="form-floating">
+                <input type="number" step="0.01" class="form-control" id="height" name="height" required>
+                <label for="height">Plant Height (cm):</label>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-floating">
+                <input type="number" step="0.01" class="form-control" id="spread" name="spread" required>
+                <label for="spread">Plant Spread (cm):</label>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-floating">
+                <select class="form-select" id="leaves" name="leaves" required>
+                    <option value="Yes" selected>Yes</option>
+                    <option value="No">No</option>
+                    <option value="Unknown">Unknown</option>
+                </select>
+                <label for="leaves">Leaves:</label>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-floating">
+                <select class="form-select" id="flowers" name="flowers" required>
+                    <option value="Yes" selected>Yes</option>
+                    <option value="No">No</option>
+                    <option value="Unknown">Unknown</option>
+                </select>
+                <label for="flowers">Flowers:</label>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-floating">
+                <input type="text" class="form-control" id="flowerColour" name="flowerColour" required>
+                <label for="flowerColour">Flower Colour:</label>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-floating">
+                <select class="form-select" id="fruitSeeds" name="fruitSeeds" required>
+                    <option value="None" selected>None</option>
+                    <option value="Fruit">Fruit</option>
+                    <option value="Seeds">Seeds</option>
+                </select>
+                <label for="fruitSeeds">Fruit or Seeds:</label>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-floating">
+                <select class="form-select" id="sunExposure" name="sunExposure" required>
+                    <option value="Full Sun" selected>Full Sun</option>
+                    <option value="Partial Sun / Shade">Partial Sun / Shade</option>
+                    <option value="Full Shade">Full Shade</option>
+                </select>
+                <label for="sunExposure">Sun Exposure:</label>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="form-floating">
+                <input type="text" class="form-control" id="location" name="location" required>
+                <label for="location">Location:</label>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-floating">
+                <input type="date" class="form-control" id="dateOfSighting" name="dateOfSighting" required>
+                <label for="dateOfSighting">Date of Sighting:</label>
+            </div>
+        </div>
 
-    <!-- FOOTER -->
-    <%- include('./partials/footer.ejs') -%>
+        <input type="hidden" id="username" name="username" value="">
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-            crossorigin="anonymous" async>
-    </script>
-    <script>
-        document.getElementById('username').value = localStorage.getItem('username'); // Set username in hidden field
-    </script>
+        <div class="col-12">
+            <button id="add_btn" type="button" class="btn" style="background: #E9EDC9">Submit</button>
+        </div>
+    </form>
+</div>
+
+<!-- FOOTER -->
+<%- include('./partials/footer.ejs') -%>
+
+<script src="/javascripts/add.js"></script>
+<script src="/javascripts/idb-utility.js"></script>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous" async>
+</script>
+<script>
+    document.getElementById('username').value = localStorage.getItem('username'); // Set username in hidden field
+</script>
+
 </body>
 
 </html>

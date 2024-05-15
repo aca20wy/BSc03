@@ -15,3 +15,7 @@ footer {
   margin-top: 2rem;
   clear: both;
 }
+
+#plant_template {
+  display: none;
+}
