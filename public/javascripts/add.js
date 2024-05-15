@@ -40,7 +40,6 @@ const addNewPlantButtonEventListener = () => {
         username: document.getElementById("username").value,
         suggestedNames: []
     }
-    console.log(plant)
     openSyncPlantsIDB().then((db) => {
         addNewPlantToSync(db, plant);
     });
@@ -53,8 +52,6 @@ const addNewPlantButtonEventListener = () => {
                     console.log("Notification Response")
                 )
         });
-
-    //TODO FIND A WAY TO REDIRECT
 }
 
 window.onload = function () {

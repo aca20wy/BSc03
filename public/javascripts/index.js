@@ -73,7 +73,7 @@ window.onload = function () {
     }
 
     if (navigator.onLine) {
-        console.log("ONLINE")
+        console.log("Online mode")
         fetch('http://localhost:3000/plants')
             .then(function (res) {
                 return res.json();
@@ -86,7 +86,7 @@ window.onload = function () {
                     })
                 });
             });
-        }).catch(() => console.log("FAKE ONLINE")).then(function () {
+        }).catch(() => console.log("Going Offline")).then(function () {
             openPlantsIDB().then((db) => {
                 getAllPlants(db).then((plants) => {
                     for (const plant of plants) {

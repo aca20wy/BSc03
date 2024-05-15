@@ -10,12 +10,13 @@ const addNewPlantToSync = (syncPlantIDB, plant) => {
             console.log("Added " + "#" + addRequest.result + ": " + plant.name)
             const getRequest = plantStore.get(addRequest.result)
             getRequest.addEventListener("success", () => {
-                console.log("Found " + JSON.stringify(getRequest.result))
                 // Send a sync message to the service worker
                 navigator.serviceWorker.ready.then((sw) => {
                     sw.sync.register("sync-plant")
+
                 }).then(() => {
                     console.log("Sync registered");
+                    window.location.replace('/')
                 }).catch((err) => {
                     console.log("Sync registration failed: " + JSON.stringify(err))
                 })
@@ -34,10 +35,9 @@ const addNewPlantsToIDB = (plantIDB, plants) => {
             return new Promise((resolveAdd, rejectAdd) => {
                 const addRequest = plantStore.add(plant);
                 addRequest.addEventListener("success", () => {
-                    console.log("Added " + "#" + addRequest.result + ": " + plant.text);
+                    console.log("Added " + "#" + addRequest.result + ": " + plant.name);
                     const getRequest = plantStore.get(addRequest.result);
                     getRequest.addEventListener("success", () => {
-                        console.log("Found " + JSON.stringify(getRequest.result));
                         // Assume insertPlantInList is defined elsewhere
                         insertPlantInList(getRequest.result);
                         resolveAdd(); // Resolve the add promise
