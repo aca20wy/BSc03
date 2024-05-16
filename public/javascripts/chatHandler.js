@@ -40,7 +40,7 @@ function sendChat() {
 function addNewChat(chatContent) {
     let chatHistory = document.getElementById('chatHistory');
     let div = document.createElement('div');
-    // console.log('new chat added:' + chatContent);
+    console.log('new chat added:' + chatContent);
     div.innerHTML = chatContent;
     chatHistory.appendChild(div);
 }

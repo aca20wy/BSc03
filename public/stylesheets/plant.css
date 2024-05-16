@@ -2,26 +2,34 @@
     display: flex;
     margin-top: 20px;
 }
+
 .plant-image {
     flex: 1;
     max-width: 50%;
 }
+
 .plant-details {
     flex: 1;
     padding-left: 20px;
 }
+
 .plant-name-header {
     text-align: center;
     margin-bottom: 20px; /* Spacing between the header and the sections below */
 }
+
 .list-group-item strong {
     margin-right: 5px; /* Adds spacing after the label */
 }
+
 .dbpedia-section {
     background-color: #f8f9fa; /* Light gray background for emphasis */
     padding: 20px;
     border-radius: 5px; /* Rounded corners */
 }
+
 .dbpedia-link {
     text-decoration: none;
 }
+
+

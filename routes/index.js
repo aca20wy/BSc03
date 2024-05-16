@@ -26,6 +26,7 @@ router.post('/add-plant', function(req, res, next) {
     let plantData = req.body;
     let filePath = plantData.img //TODO TEMP
     plantData.username = req.body.username;
+
     plantsController.create(plantData, filePath).then(plant => {
         res.status(200).send(plant);
     }).catch(err => {

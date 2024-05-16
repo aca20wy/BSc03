@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-// var plantsController  = require('../controllers/plants');
+var plantsController  = require('../controllers/plants');
 var Plant = require('../models/plants');
 
 router.get('/:id', function(req, res) {
@@ -17,6 +17,24 @@ router.get('/:id', function(req, res) {
           console.error(err);
           res.status(500).send(err.message);
       });
+});
+
+router.post('/:id', function(req, res){
+    let plantId = req.body.id;
+    let updatedData = {
+        name: req.body.name,
+        nameStatus: req.body.nameStatus
+    };
+    console.log(updatedData);
+
+    plantsController.editPlant(plantId, updatedData)
+        .then(editedPlant => {
+            console.log('Edited plant:', editedPlant);
+            res.status(200).send(editedPlant);
+        }).catch(err => {
+            console.error('Error editing plant:', err);
+            res.status(500).send(err);
+    });
 });
 
 module.exports = router;

@@ -69,4 +69,20 @@ exports.saveChat = function(chatData) {
         });
 };
 
+exports.editPlant = function(plantId, updatedData) {
+    return plantModel.findByIdAndUpdate(
+        plantId,
+        updatedData,
+        { new: true, safe: true, upsert: true }
+    )
+        .then(updatedPlant => {
+            console.log('edited:' + updatedPlant);
+            // return the updated plant as a JSON string
+            return JSON.stringify(updatedPlant);
+        })
+        .catch(err => {
+            console.error(err);
+            return null;
+        });
+};
 
