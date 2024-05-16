@@ -1,3 +1,12 @@
+#saveChangesBtn {
+    background-color: #faedcd;
+    transition: background-color 0.15s ease-in-out;
+}
+
+#saveChangesBtn:hover {
+    background-color: #d4a373;
+}
+
 .detail-view {
     display: flex;
     margin-top: 20px;
@@ -30,6 +39,15 @@
 
 .dbpedia-link {
     text-decoration: none;
+}
+
+#chatSendBtn {
+    background-color: #e9edc9;
+    transition: background-color 0.15s ease-in-out;
+}
+
+#chatSendBtn:hover {
+    background-color: #ccd5ae;
 }
 
 

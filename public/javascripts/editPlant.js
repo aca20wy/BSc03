@@ -3,21 +3,21 @@ document.addEventListener('DOMContentLoaded', function() {
     const currentUser = localStorage.getItem('username');
 
     if (currentUser === originalUser) {
-        document.getElementById('editButton').style.display = 'block';
+        document.getElementById('editBtn').style.display = 'block';
     }
 
-    document.getElementById('editButton').addEventListener('click', toggleEditMode);
-    document.getElementById('saveChangesButton').addEventListener('click', saveChanges);
-    document.getElementById('cancelChangesButton').addEventListener('click', cancelChanges);
+    document.getElementById('editBtn').addEventListener('click', toggleEditMode);
+    document.getElementById('saveChangesBtn').addEventListener('click', saveChanges);
+    document.getElementById('cancelChangesBtn').addEventListener('click', cancelChanges);
 });
 
 function toggleEditMode() {
     const nameField = document.getElementById('plantName');
     const statusField = document.getElementById('plantStatus');
-    const editButton = document.getElementById('editButton');
-    const saveCancelButtons = document.getElementById('saveCancelButtons');
+    const editBtn = document.getElementById('editBtn');
+    const saveCancelBtns = document.getElementById('saveCancelBtns');
 
-    const isEditing = editButton.style.display === 'none';
+    const isEditing = editBtn.style.display === 'none';
 
     if (isEditing) {
         // Switch back to view mode
@@ -31,8 +31,8 @@ function toggleEditMode() {
             console.error('Input fields not found when switching back to view mode');
         }
 
-        editButton.style.display = 'block';
-        saveCancelButtons.style.display = 'none';
+        editBtn.style.display = 'block';
+        saveCancelBtns.style.display = 'none';
     } else {
         // Switch to edit mode
         nameField.innerHTML = `<input type="text" id="nameInput" class="form-control" value="${nameField.getAttribute('data-original-value')}">`;
@@ -42,8 +42,8 @@ function toggleEditMode() {
                 <option value="Completed" ${statusField.getAttribute('data-original-value') === 'Completed' ? 'selected' : ''}>Completed</option>
             </select>
         `;
-        editButton.style.display = 'none';
-        saveCancelButtons.style.display = 'block';
+        editBtn.style.display = 'none';
+        saveCancelBtns.style.display = 'block';
     }
 }
 
@@ -85,6 +85,6 @@ function cancelChanges() {
     const statusField = document.getElementById('plantStatus');
     nameField.innerHTML = nameField.getAttribute('data-original-value');
     statusField.innerHTML = statusField.getAttribute('data-original-value');
-    document.getElementById('editButton').style.display = 'block';
-    document.getElementById('saveCancelButtons').style.display = 'none';
+    document.getElementById('editBtn').style.display = 'block';
+    document.getElementById('saveCancelBtns').style.display = 'none';
 }
