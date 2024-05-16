@@ -6,7 +6,7 @@ var file
 fileInput.addEventListener("change", e => {
     file = fileInput.files[0];
     if(file.size>2097152) {
-        //TODO make this look nice
+        //TODO please someone make this look nice
         console.log(file)
         alert("file too big");
         this.value=""
@@ -38,7 +38,7 @@ const addNewPlantButtonEventListener = () => {
         location: document.getElementById("location").value,
         dateOfSighting: document.getElementById("dateOfSighting").value,
         username: document.getElementById("username").value,
-        suggestedNames: []
+        chat: []
     }
     openSyncPlantsIDB().then((db) => {
         addNewPlantToSync(db, plant);
