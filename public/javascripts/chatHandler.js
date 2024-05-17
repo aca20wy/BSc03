@@ -4,6 +4,11 @@ const plantId = localStorage.getItem('viewing_plant')
 
 let socket = io();
 
+socket.io.on("error", (error) => {
+    console.log("Chat error")
+    socket.disconnect()
+})
+
 /**
  * called by <body onload>
  * it initialises the interface and the expected socket messages
