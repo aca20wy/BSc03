@@ -20,7 +20,6 @@ self.addEventListener('install', event => {
                 '/javascripts/usernameHandler.js',
                 '/javascripts/add.js',
                 '/javascripts/plant.js',
-                '/javascripts/dbpediaHandler.js',
                 '/stylesheets/style.css',
                 '/stylesheets/index.css',
                 '/stylesheets/plant.css'
@@ -63,7 +62,7 @@ self.addEventListener('fetch', event => {
         }
         console.log('Service Worker: Fetching from URL: ', event.request.url);
         return fetch(event.request);
-    })());
+    })("error"));
 });
 
 //Sync event to sync the plants
@@ -73,50 +72,64 @@ self.addEventListener('sync', event => {
         console.log('Service Worker: Syncing new Plants');
         openSyncPlantsIDB().then((syncPostDB) => {
             getAllSyncPlants(syncPostDB).then((syncPlants) => {
-                for (const syncPlant of syncPlants) {
-                    console.log('Service Worker: Syncing new Plant: ', syncPlant.data.name);
-                    // Create a FormData object
-                    const formData = new URLSearchParams();
+                openSyncChatIDB().then((syncChatIDB) => {
+                    getPendingSyncChats(syncChatIDB).then((syncChats) => {
+                        for (let syncPlant of syncPlants) {
+                            let syncPlantChats = syncPlant.data.chat
+                            for(const syncChat of syncChats) {
+                                if(syncChat.data.plantId == syncPlant.id)
+                                {
+                                    syncPlantChats.push(syncChat.data)
+                                    console.log(syncPlantChats)
+                                }
+                            }
+                            console.log('Service Worker: Syncing new Plant: ', syncPlant.data.name);
+                            // Create a FormData object
+                            const formData = new URLSearchParams();
 
-                    // Iterate over the properties of the JSON object and append them to FormData
-                    formData.append("name", syncPlant.data.name);
-                    formData.append("nameStatus", syncPlant.data.nameStatus);
-                    formData.append("description", syncPlant.data.description);
-                    formData.append("img", syncPlant.data.img)
-                    formData.append("height", syncPlant.data.height);
-                    formData.append("spread", syncPlant.data.spread);
-                    formData.append("leaves", syncPlant.data.leaves);
-                    formData.append("flowers", syncPlant.data.flowers);
-                    formData.append("flowerColour", syncPlant.data.flowerColour);
-                    formData.append("fruitSeeds", syncPlant.data.fruitSeeds);
-                    formData.append("sunExposure", syncPlant.data.sunExposure);
-                    formData.append("location", syncPlant.data.location);
-                    formData.append("dateOfSighting", syncPlant.data.dateOfSighting);
-                    formData.append("username", syncPlant.data.username);
-                    formData.append("",syncPlant.data.chat)
-
-
-                    // Fetch with FormData instead of JSON
-                    fetch('http://localhost:3000/add-plant', {
-                        method: 'POST',
-                        body: formData,
-                        headers: {
-                            'Content-Type': 'application/x-www-form-urlencoded',
-                        },
-                    }).then(() => {
-                        console.log('Service Worker: Syncing new Plant: ', syncPlant.data.name, ' done');
-                        deleteSyncPlantFromIDB(syncPostDB,syncPlant.id);
-                        console.log("here?")
-                        // Send a notification
-                        self.registration.showNotification('Plant Synced', {
-                            body: 'Plant synced successfully!',
-                        });
+                            // Iterate over the properties of the JSON object and append them to FormData
+                            formData.append("name", syncPlant.data.name);
+                            formData.append("nameStatus", syncPlant.data.nameStatus);
+                            formData.append("description", syncPlant.data.description);
+                            formData.append("img", syncPlant.data.img)
+                            formData.append("height", syncPlant.data.height);
+                            formData.append("spread", syncPlant.data.spread);
+                            formData.append("leaves", syncPlant.data.leaves);
+                            formData.append("flowers", syncPlant.data.flowers);
+                            formData.append("flowerColour", syncPlant.data.flowerColour);
+                            formData.append("fruitSeeds", syncPlant.data.fruitSeeds);
+                            formData.append("sunExposure", syncPlant.data.sunExposure);
+                            formData.append("location", syncPlant.data.location);
+                            formData.append("dateOfSighting", syncPlant.data.dateOfSighting);
+                            formData.append("username", syncPlant.data.username);
+                            formData.append("chat",syncPlantChats)
 
 
-                    }).catch((err) => {
-                        console.error('Service Worker: Syncing new Plant: ', syncPlant.data.name, ' failed');
-                    });
-                }
+                            // Fetch with FormData instead of JSON
+                            fetch('http://localhost:3000/add-plant', {
+                                method: 'POST',
+                                body: formData,
+                                headers: {
+                                    'Content-Type': 'application/x-www-form-urlencoded',
+                                },
+                            }).then(() => {
+                                console.log('Service Worker: Syncing new Plant: ', syncPlant.data.name, ' done');
+                                deleteSyncPlantFromIDB(syncPostDB,syncPlant.id);
+
+                                console.log("here?")
+                                // Send a notification
+                                self.registration.showNotification('Plant Synced', {
+                                    body: 'Plant synced successfully!',
+                                });
+
+
+                            }).catch((err) => {
+                                console.error('Service Worker: Syncing new Plant: ', syncPlant.data.name, ' failed');
+                            });
+                        }
+                    })
+                })
+
 
             });
         });
@@ -156,6 +169,44 @@ self.addEventListener('sync', event => {
                     }).catch((err) => {
                         console.error('Service Worker: Updating new Plant: ', updatePlant.data.name, ' failed');
                     });
+                }
+
+            });
+        });
+    }
+    else if(event.tag === "update-chat")
+    {
+        console.log('Service Worker: Syncing Chats');
+        openChatIDB().then((chatDB) => {
+            getPendingChats(chatDB).then((chats) => {
+                for (const chat of chats) {
+                    console.log('Service Worker: Syncing Chat');
+                    // Create a FormData object
+                    const formData = new URLSearchParams();
+
+                    // Iterate over the properties of the JSON object and append them to FormData
+                    formData.append("chatUsername", chat.data.chatUsername);
+                    formData.append("chatText", chat.data.chatText);
+                    formData.append("chatTimeStamp", chat.data.chatTime);
+                    formData.append("plantId", chat.data.plantId)
+
+
+                    // Fetch with FormData instead of JSON
+                    fetch('http://localhost:3000/update-chat', {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                    }).then(() => {
+                        console.log("Service Worker: Updating Plant Chats done");
+                        deleteChatFromIDB(chatDB,chat.id).then(() => {
+                            self.registration.showNotification('Plant Chat Uploaded', {
+                                body: 'Plant chats uploaded!',
+                            });
+                        })
+                    })
+
                 }
 
             });

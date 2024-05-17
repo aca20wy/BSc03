@@ -12,7 +12,6 @@ window.onload = function () {
     }
     else
     {
-        //TODO DEAL WITH UPDATE PLANTS
         openSyncPlantsIDB().then((db) => {
             getSyncPlant(Number(localStorage.getItem('viewing_plant')), db).then((plant) => {
                 insertPlantDetails(plant)
@@ -23,12 +22,13 @@ window.onload = function () {
 }
 
 function DBPedia() {
-    // The DBPedia SPARQL endpoint URL
-    const endpointUrl = 'https://dbpedia.org/sparql';
+    try{
+        // The DBPedia SPARQL endpoint URL
+        const endpointUrl = 'https://dbpedia.org/sparql';
 
-    const name = document.getElementById("plant_name").textContent
+        const name = document.getElementById("plant_name").textContent
 
-    const sparqlQuery = `
+        const sparqlQuery = `
         SELECT DISTINCT ?resource
         WHERE {
           ?resource rdfs:label ?label .
@@ -39,41 +39,41 @@ function DBPedia() {
         `;
 
 // Encode the query as a URL parameter
-    const encodedQuery = encodeURIComponent(sparqlQuery);
+        const encodedQuery = encodeURIComponent(sparqlQuery);
 
 // Build the URL for the SPARQL query
-    const url = `${endpointUrl}?query=${encodedQuery}&format=json`;
+        const url = `${endpointUrl}?query=${encodedQuery}&format=json`;
 
 // Fetch the data from the SPARQL endpoint
-    fetch(url)
-        .then(response => response.json())
-        .then(data => {
-            // The results are in the 'data' object
-            let bindings = data.results.bindings;
-            let result = JSON.stringify(bindings);
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                // The results are in the 'data' object
+                let bindings = data.results.bindings;
+                let result = JSON.stringify(bindings);
 
-            bindings.forEach((binding) => {
-                if (binding.resource.value != null || binding.resource.value == "") {
-                    let option = document.createElement("li");
-                    let link = document.createElement("a")
-                    link.href = binding.resource.value;
-                    link.text = binding.resource.value;
-                    // let optionText = document.createTextNode(binding.resource.value);
-                    option.appendChild(link);
-                    document.getElementById("dbpedia").appendChild(option);
+                bindings.forEach((binding) => {
+                    if (binding.resource.value != null || binding.resource.value == "") {
+                        let option = document.createElement("li");
+                        let link = document.createElement("a")
+                        link.href = binding.resource.value;
+                        link.text = binding.resource.value;
+                        // let optionText = document.createTextNode(binding.resource.value);
+                        option.appendChild(link);
+                        document.getElementById("dbpedia").appendChild(option);
+                    }
+                });
+
+                if (bindings.length == 0) {
+                    let label = document.getElementById("dbpediaLabel")
+                    label.textContent = " None found";
                 }
             });
+    }catch (err) {
+        console.log("DBPedia unavailable")
+    }
 
-            if (bindings.length == 0) {
-                let label = document.getElementById("dbpediaLabel")
-                label.textContent = " None found";
-            }
-        });
 }
-
-
-
-
 
 const insertPlantDetails = (plant) => {
     console.log("INSERT PLANT DETAILS")
@@ -111,6 +111,32 @@ const insertPlantDetails = (plant) => {
             chatList.appendChild(chat_template)
         }
 
+        console.log("CHECK CHAT IDB")
+
+        openChatIDB().then((chatIDB) => {
+            getPendingChats(chatIDB).then((pendingChats) => {
+                console.log(pendingChats)
+                console.log(pendingChats.length)
+                for(let i = 0; i<pendingChats.length; i++)
+                {
+                    console.log("CHAT IN IDB")
+                    console.log(pendingChats[i])
+                    console.log(localStorage.getItem("viewing_plant"))
+                    console.log(pendingChats[i].data.plantId)
+                    if(pendingChats[i].data.plantId == localStorage.getItem("viewing_plant"))
+                    {
+
+                        let chat_template = document.getElementById("chat_template").cloneNode(true);
+                        chat_template.removeAttribute("id")
+                        chat_template.innerHTML = "<strong>"+pendingChats[i].data.chatUsername+":</strong> "+pendingChats[i].data.chatText
+                        chatList.appendChild(chat_template)
+                    }
+                }
+            })
+        })
+
+
+
     }
     else
     {
@@ -145,6 +171,30 @@ const insertPlantDetails = (plant) => {
             chat_template.innerHTML = "<strong>"+chat.chatUsername+":</strong> "+chat.chatText
             chatList.appendChild(chat_template)
         }
+
+        console.log("CHECK CHAT IDB")
+
+        openSyncChatIDB().then((chatIDB) => {
+            getPendingSyncChats(chatIDB).then((pendingChats) => {
+                console.log(pendingChats)
+                console.log(pendingChats.length)
+                for(let i = 0; i<pendingChats.length; i++)
+                {
+                    console.log("CHAT IN IDB")
+                    console.log(pendingChats[i])
+                    console.log(localStorage.getItem("viewing_plant"))
+                    console.log(pendingChats[i].data.plantId)
+                    if(pendingChats[i].data.plantId == localStorage.getItem("viewing_plant"))
+                    {
+
+                        let chat_template = document.getElementById("chat_template").cloneNode(true);
+                        chat_template.removeAttribute("id")
+                        chat_template.innerHTML = "<strong>"+pendingChats[i].data.chatUsername+":</strong> "+pendingChats[i].data.chatText
+                        chatList.appendChild(chat_template)
+                    }
+                }
+            })
+        })
     }
     addEditListeners()
     DBPedia()

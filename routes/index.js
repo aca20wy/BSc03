@@ -54,6 +54,18 @@ router.post('/update-plant', function(req, res){
     });
 });
 
+router.post('/update-chat', function (req,res,next) {
+    let chatData = {
+        chatUsername: req.body.chatUsername,
+        chatText: req.body.chatText,
+        chatTimeStamp: req.body.datetime,
+        plantId: req.body.plantId
+    };
+    console.log('Chat Data: ' + chatData);
+    plantsController.saveChat(chatData);
+    console.log('Chat saved!');
+})
+
 router.get('/plant', function(req, res, next) {
     res.render('plant')
 })

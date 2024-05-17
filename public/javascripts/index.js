@@ -144,13 +144,6 @@ window.onload = function () {
                         }
                     });
                 });
-                openUpdatePlantsIDB().then((db) => {
-                    getAllUpdatePlants(db).then((update_plants) => {
-                        for (const update_plant of update_plants) {
-                            insertUpdatePlantInList(update_plant)
-                        }
-                    });
-                });
             })
         })
 
@@ -169,13 +162,6 @@ window.onload = function () {
             getAllSyncPlants(db).then((sync_plants) => {
                 for (const sync_plant of sync_plants) {
                     insertSyncPlantInList(sync_plant)
-                }
-            });
-        });
-        openUpdatePlantsIDB().then((db) => {
-            getAllUpdatePlants(db).then((update_plants) => {
-                for (const update_plant of update_plants) {
-                    insertUpdatePlantInList(update_plant)
                 }
             });
         });

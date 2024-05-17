@@ -402,4 +402,161 @@ function openUpdatePlantsIDB() {
     });
 }
 
+function openChatIDB() {
+    return new Promise((resolve, reject) => {
+        const request = indexedDB.open("chats", 1);
+
+        request.onerror = function (event) {
+            reject(new Error(`Database error: ${event.target}`));
+        };
+
+        request.onupgradeneeded = function (event) {
+            const db = event.target.result;
+            db.createObjectStore('chats', {keyPath: 'id', autoIncrement: true});
+        };
+
+        request.onsuccess = function (event) {
+            const db = event.target.result;
+            resolve(db);
+        };
+    });
+}
+
+function openSyncChatIDB() {
+    return new Promise((resolve, reject) => {
+        const request = indexedDB.open("sync-chats", 1);
+
+        request.onerror = function (event) {
+            reject(new Error(`Database error: ${event.target}`));
+        };
+
+        request.onupgradeneeded = function (event) {
+            const db = event.target.result;
+            db.createObjectStore('sync-chats', {keyPath: 'id', autoIncrement: true});
+        };
+
+        request.onsuccess = function (event) {
+            const db = event.target.result;
+            resolve(db);
+        };
+    });
+}
+
+const getPendingChats = (chatIDB) => {
+    return new Promise((resolve, reject) => {
+        const transaction = chatIDB.transaction(["chats"]);
+        const chatStore = transaction.objectStore("chats");
+        const getAllRequest = chatStore.getAll();
+
+        // Handle success event
+        getAllRequest.addEventListener("success", (event) => {
+            resolve(event.target.result); // Use event.target.result to get the result
+        });
+
+        // Handle error event
+        getAllRequest.addEventListener("error", (event) => {
+            reject(event.target.error);
+        });
+    });
+}
+
+const getPendingSyncChats = (chatIDB) => {
+    return new Promise((resolve, reject) => {
+        const transaction = chatIDB.transaction(["sync-chats"]);
+        const chatStore = transaction.objectStore("sync-chats");
+        const getAllRequest = chatStore.getAll();
+
+        // Handle success event
+        getAllRequest.addEventListener("success", (event) => {
+            resolve(event.target.result); // Use event.target.result to get the result
+        });
+
+        // Handle error event
+        getAllRequest.addEventListener("error", (event) => {
+            reject(event.target.error);
+        });
+    });
+}
+
+const deleteChatFromIDB = (chatIDB, id) => {
+    return new Promise((resolve, reject) => {
+        const transaction = chatIDB.transaction(["chats"], "readwrite")
+        const chatStore = transaction.objectStore("chats")
+        const deleteRequest = chatStore.delete(id)
+        deleteRequest.addEventListener("success", () => {
+            resolve();
+            console.log("Deleted " + id)
+        })
+        deleteRequest.addEventListener("error", () => {
+            reject();
+        })
+    })
+
+}
+
+const addNewChatToIDB = (chatIDB, chat) => {
+    // Retrieve plant and add it to the IndexedDB
+
+    const transaction = chatIDB.transaction(["chats"], "readwrite")
+    const plantStore = transaction.objectStore("chats")
+    console.log("ADDED CHAT")
+    const addRequest = plantStore.add({data: chat})
+    addRequest.addEventListener("success", () => {
+        //console.log("Added " + "#" + addRequest.result + ": " + plant.name)
+        const getRequest = plantStore.get(addRequest.result)
+        getRequest.addEventListener("success", () => {
+            // Send a sync message to the service worker
+            navigator.serviceWorker.ready.then((sw) => {
+                sw.sync.register("update-chat")
+
+            }).then(() => {
+                console.log("Chat registered");
+            }).catch((err) => {
+                console.log("Chat registration failed: " + JSON.stringify(err))
+            })
+        })
+    })
+}
+
+
+const deleteSyncChatFromIDB = (chatIDB, id) => {
+    return new Promise((resolve, reject) => {
+        const transaction = chatIDB.transaction(["sync-chats"], "readwrite")
+        const chatStore = transaction.objectStore("sync-chats")
+        const deleteRequest = chatStore.delete(id)
+        deleteRequest.addEventListener("success", () => {
+            resolve();
+            console.log("Deleted " + id)
+        })
+        deleteRequest.addEventListener("error", () => {
+            reject();
+        })
+    })
+
+}
+
+const addNewSyncChatToIDB = (chatIDB, chat) => {
+    // Retrieve plant and add it to the IndexedDB
+
+    const transaction = chatIDB.transaction(["sync-chats"], "readwrite")
+    const plantStore = transaction.objectStore("sync-chats")
+    console.log("ADDED SYNC CHAT")
+    const addRequest = plantStore.add({data: chat})
+    addRequest.addEventListener("success", () => {
+        //console.log("Added " + "#" + addRequest.result + ": " + plant.name)
+        const getRequest = plantStore.get(addRequest.result)
+        getRequest.addEventListener("success", () => {
+            // Send a sync message to the service worker
+            navigator.serviceWorker.ready.then((sw) => {
+                sw.sync.register("update-chat")
+
+            }).then(() => {
+                console.log("Chat registered");
+            }).catch((err) => {
+                console.log("Chat registration failed: " + JSON.stringify(err))
+            })
+        })
+    })
+}
+
 
