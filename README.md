@@ -28,8 +28,14 @@ You must have the following installed:
     ```sh
     npm install
     ```
+3. **Start MongoDB**:
 
-3. **Start the Application**:
+    Ensure that MongoDB is running on your system. You can start MongoDB using:
+    ```sh
+    mongod
+    ```
+   
+4. **Run the Application**:
 
     ```sh
     npm start
@@ -38,6 +44,7 @@ You must have the following installed:
 5. **Access the Application**:
 
     Open your browser and navigate to `http://localhost:3000`.
+
 
 
 ## Screenshots
