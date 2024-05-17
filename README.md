@@ -48,7 +48,7 @@ You must have the following installed:
 
 
 ## Screenshots
-Screenshots demonstrating app functionalities can be found in the '**Screenshots**' directory. 
+Screenshots demonstrating app functionalities can be found in the '**screenshots**' directory. 
 
 ---
 
