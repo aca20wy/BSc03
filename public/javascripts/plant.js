@@ -156,7 +156,8 @@ function addEditListeners() {
     const currentUser = localStorage.getItem('username');
     const plantStatus = document.getElementById('plant_nameStatus').innerText;
 
-    if (currentUser === originalUser) {
+    // Show edit button only to the original user and if the status is still in-progress
+    if (currentUser === originalUser && plantStatus === 'In-progress') {
         document.getElementById('editButton').style.display = 'block';
     }
 
@@ -181,18 +182,15 @@ function toggleEditMode() {
         if (nameInput && statusSelect) {
             nameField.innerText = nameInput.value;
             statusField.innerText = statusSelect.value;
-        } else {
-            if(statusSelect.value === "In-progress")
-            {
+
+            // Show edit button again if the status is still in-progress
+            if(statusSelect.value === "In-progress") {
                 editButton.style.display = "block";
             }
-            else
-            {
-                console.error('Input fields not found when switching back to view mode');
-            }
-        }
 
-        editButton.style.display = 'block';
+        } else {
+            console.error('Input fields not found when switching back to view mode');
+        }
         saveCancelButtons.style.display = 'none';
     } else {
         // Switch to edit mode
