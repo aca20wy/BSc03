@@ -1,4 +1,4 @@
-#saveChangesBtn {
+#saveChangesButton {
     background-color: #faedcd;
     transition: background-color 0.15s ease-in-out;
 }
@@ -7,7 +7,7 @@
     display: none;
 }
 
-#saveChangesBtn:hover {
+#saveChangesButton:hover {
     background-color: #d4a373;
 }
 
@@ -45,12 +45,12 @@
     text-decoration: none;
 }
 
-#chatSendBtn {
+#chatSendButton {
     background-color: #e9edc9;
     transition: background-color 0.15s ease-in-out;
 }
 
-#chatSendBtn:hover {
+#chatSendButton:hover {
     background-color: #ccd5ae;
 }
 
