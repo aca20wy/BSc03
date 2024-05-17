@@ -19,9 +19,8 @@ You must have the following installed:
 1. **Clone the Repository**:
 
     ```sh
-    git clone <repository-url>
+    git clone https://github.com/aca20wy/BSc03.git
     cd BSc03
-    ```
 
 2. **Install Dependencies**:
 
