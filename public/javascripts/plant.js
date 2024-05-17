@@ -38,13 +38,13 @@ function DBPedia() {
         LIMIT 5
         `;
 
-// Encode the query as a URL parameter
+    // Encode the query as a URL parameter
         const encodedQuery = encodeURIComponent(sparqlQuery);
 
-// Build the URL for the SPARQL query
+    // Build the URL for the SPARQL query
         const url = `${endpointUrl}?query=${encodedQuery}&format=json`;
 
-// Fetch the data from the SPARQL endpoint
+    // Fetch the data from the SPARQL endpoint
         fetch(url)
             .then(response => response.json())
             .then(data => {
@@ -93,7 +93,9 @@ const insertPlantDetails = (plant) => {
         document.getElementById("plant_spread").innerHTML = "<strong>Spread:</strong> "+plant.spread+"cm"
         document.getElementById("plant_leaves").innerHTML = "<strong>Leaves:</strong> "+plant.leaves
         document.getElementById("plant_flowers").innerHTML = "<strong>Flowers:</strong> "+plant.flowers
-        document.getElementById("plant_flower_colours").style = "background-color:" +plant.flowerColour+" color:"+plant.flowerColour
+        document.getElementById("plant_flower_colours").style = "background-color:"+plant.flowerColour+"; color:"+plant.flowerColour+";"
+        document.getElementById("plant_flower_colours").textContent = plant.flowerColour
+        document.getElementById("plant_flower_rgb").textContent = plant.flowerColour
         document.getElementById("plant_fruit_seeds").innerHTML = "<strong>Fruit Seeds:</strong> "+plant.fruitSeeds
         document.getElementById("plant_sun_exposure").innerHTML = "<strong>Sun Exposure:</strong> "+plant.sunExposure
         document.getElementById("plant_location").innerHTML = "<strong>Location:</strong> "+plant.location
@@ -154,7 +156,9 @@ const insertPlantDetails = (plant) => {
         document.getElementById("plant_spread").innerHTML = "<strong>Spread:</strong> "+plant.data.spread+"cm"
         document.getElementById("plant_leaves").innerHTML = "<strong>Leaves:</strong> "+plant.data.leaves
         document.getElementById("plant_flowers").innerHTML = "<strong>Flowers:</strong> "+plant.data.flowers
-        document.getElementById("plant_flower_colours").style = "background-color:" +plant.data.flowerColour+" color:"+plant.data.flowerColour
+        document.getElementById("plant_flower_colours").style = "background-color:"+plant.flowerColour+"; color:"+plant.flowerColour+";"
+        document.getElementById("plant_flower_colours").textContent = plant.flowerColour
+        document.getElementById("plant_flower_rgb").textContent = plant.flowerColour
         document.getElementById("plant_fruit_seeds").innerHTML = "<strong>Fruit Seeds:</strong> "+plant.data.fruitSeeds
         document.getElementById("plant_sun_exposure").innerHTML = "<strong>Sun Exposure:</strong> "+plant.data.sunExposure
         document.getElementById("plant_location").innerHTML = "<strong>Location:</strong> "+plant.data.location

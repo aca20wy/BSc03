@@ -63,6 +63,9 @@
         </div>
     </div>
 
+<!-- HEADER -->
+<%- include('./partials/header.ejs') -%>
+
     <div class="container">
         <!-- Header Section -->
         <div class="row">
@@ -75,59 +78,52 @@
             <div class="col-12">
                 <h4>Sort & Filter</h4>
             </div>
-            <div class="col-md-4">
+            <!--div class="col-md-4">
                 <select class="form-select" name="timeFil" id="timeFil">
-                    <option selected>Time Filter</option>
+                    <option value="0" selected>Time Filter</option>
                     <option value="1">Newest</option>
                     <option value="2">Oldest</option>
                 </select>
-            </div>
-            <div class="col-md-4">
-                <select class="form-select" name="nameFil" id="nameFil">
-                    <option selected>Name Filter</option>
+            </div-->
+            <div class="col-md-6">
+                <select class="form-select" name="nameFil" id="nameFil" onchange="filterPlantList('nameSts')">
+                    <option value="0" selected>Name Filter</option>
                     <option value="Completed">Identified Plants</option>
-                    <option value="In-Progress">Unidentified Plants</option>
+                    <option value="In-progress">Unidentified Plants</option>
                 </select>
             </div>
-            <div class="col-md-4">
-                <select class="form-select" name="locationFil" id="locationFil">
-                    <option selected>Location Filter</option>
-                    <option value="Nearest">Nearest</option>
-                    <option value="Furthest">Furthest</option>
-                </select>
-            </div>
-            <div class="col-md-3">
-                <select class="form-select" name="leaveFil" id="leaveFil">
-                    <option selected>Leaves Filter</option>
+            <div class="col-md-6">
+                <select class="form-select" name="leaveFil" id="leaveFil" onchange="filterPlantList('leave')">
+                    <option value="0" selected>Leaves Filter</option>
                     <option value="Yes">With Leaves</option>
                     <option value="No">Without Leaves</option>
                 </select>
             </div>
-            <div class="col-md-3">
-                <select class="form-select" name="flowerFil" id="flowerFil">
-                    <option selected>Flower Filter</option>
+            <div class="col-md-4">
+                <select class="form-select" name="flowerFil" id="flowerFil" onchange="filterPlantList('flower')">
+                    <option value="0" selected>Flower Filter</option>
                     <option value="Yes">With Flowers</option>
                     <option value="No">Without Flowers</option>
                 </select>
             </div>
-            <div class="col-md-3">
-                <select class="form-select" name="fruSeeFil" id="fruSeeFil">
-                    <option selected>Fruit/Seed Filter</option>
+            <div class="col-md-4">
+                <select class="form-select" name="fruSeeFil" id="fruSeeFil" onchange="filterPlantList('fruSee')">
+                    <option value="0" selected>Fruit/Seed Filter</option>
                     <option value="None">None</option>
                     <option value="Fruit">Fruit</option>
                     <option value="Seeds">Seeds</option>
                 </select>
             </div>
-            <div class="col-md-3">
-                <select class="form-select" name="sunFil" id="sunFil">
-                    <option selected>Sun Exposure Filter</option>
+            <div class="col-md-4">
+                <select class="form-select" name="sunFil" id="sunFil" onchange="filterPlantList('sunExp')">
+                    <option value="0" selected>Sun Exposure Filter</option>
                     <option value="Full Sun">Full Sun</option>
                     <option value="Partial Sun / Shade">Partial Sun / Shade</option>
                     <option value="Full Shade">Full Shade</option>
                 </select>
             </div>
-            <div class="col-12">
-                <button type="submit" class="btn float-md-end" style="background: #E9EDC9">Apply</button>
+            <div class="col-md-4">
+                <button type="button" onclick="showAllPlants()" class="btn" style="background: #E9EDC9">Reset Filters</button>
             </div>
         </form>
     </div>
@@ -144,6 +140,11 @@
                         <h5 class="card-title text-center">
                             <a id="plant_name_with_link" class="text-decoration-none text-dark">Plant Name</a>
                         </h5>
+                        <span class="hiddenAttr nameStatus"></span>
+                        <span class="hiddenAttr leaves"></span>
+                        <span class="hiddenAttr flower"></span>
+                        <span class="hiddenAttr fruSeed"></span>
+                        <span class="hiddenAttr sunExp"></span>
                     </div>
                 </div>
             </div>

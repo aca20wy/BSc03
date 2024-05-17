@@ -5,12 +5,17 @@ const insertPlantInList = (plant) => {
     if (plant._id !== null && plant._id !== undefined) {
         const copy = document.getElementById("plant_template").cloneNode(true)
         copy.removeAttribute("id")
-        // console.log(copy.childNodes)// otherwise this will be hidden as well
+        copy.style.display = "block"
+
         copy.childNodes.item(1).childNodes.item(1).id = plant._id //href plant page link plant-card
         copy.childNodes.item(1).childNodes.item(1).childNodes.item(1).src =  plant.img //image
         copy.childNodes.item(1).childNodes.item(1).childNodes.item(1).alt = "Image of " + plant.name //image alt text
-        //copy.childNodes.item(1).childNodes.item(3).childNodes.item(1).childNodes.item(1).href = "/plant/"+plant._id //href card-body
         copy.childNodes.item(1).childNodes.item(3).childNodes.item(1).childNodes.item(1).textContent = plant.name //plant card name
+        copy.childNodes.item(1).childNodes.item(3).childNodes.item(3).textContent = plant.nameStatus;
+        copy.childNodes.item(1).childNodes.item(3).childNodes.item(5).textContent = plant.leaves;
+        copy.childNodes.item(1).childNodes.item(3).childNodes.item(7).textContent = plant.flowers;
+        copy.childNodes.item(1).childNodes.item(3).childNodes.item(9).textContent = plant.fruitSeeds;
+        copy.childNodes.item(1).childNodes.item(3).childNodes.item(11).textContent = plant.sunExposure;
 
         // Insert sorted on string text order - ignoring case
         const plantList = document.getElementById("plant_list")
@@ -22,6 +27,129 @@ const insertPlantInList = (plant) => {
         plantList.appendChild(copy) //ADDS child at the end TODO default sort?
     }
 }
+
+// gets the necessary information based on which filter changes and to what value it changes to
+function filterPlantList(filter) {
+    let val
+    switch (filter) {
+        case 'nameSts':
+            val = document.getElementById("nameFil").value
+            switch (val) {
+                case "0":
+                    showPlant(3, val)
+                    break;
+                case "Completed":
+                    showPlant(3, val)
+                    break;
+                case "In-progress":
+                    showPlant(3, val)
+                    break;
+            }
+            break;
+        case 'leave':
+            val = document.getElementById("leaveFil").value
+            switch (val) {
+                case "0":
+                    showPlant(5, val)
+                    break;
+                case "Yes":
+                    showPlant(5, val)
+                    break;
+                case "No":
+                    showPlant(5, val)
+                    break;
+            }
+            break;
+        case 'flower':
+            val = document.getElementById("flowerFil").value
+            switch (val) {
+                case "0":
+                    showPlant(7, val)
+                    break;
+                case "Yes":
+                    showPlant(7, val)
+                    break;
+                case "No":
+                    showPlant(7, val)
+                    break;
+            }
+            break;
+        case 'fruSee':
+            val = document.getElementById("fruSeeFil").value
+            switch (val) {
+                case "0":
+                    showPlant(9, val)
+                    break;
+                case "None":
+                    showPlant(9, val)
+                    break;
+                case "Fruit":
+                    showPlant(9, val)
+                    break;
+                case "Seeds":
+                    showPlant(9, val)
+                    break;
+            }
+            break;
+        case 'sunExp':
+            val = document.getElementById("SunFil").value
+            switch (val) {
+                case "0":
+                    showPlant(11, val)
+                    break;
+                case "Full Sun":
+                    showPlant(11, val)
+                    break;
+                case "Partial Sun / Shade":
+                    showPlant(11, val)
+                    break;
+                case "Full Shade":
+                    showPlant(11, val)
+                    break;
+            }
+            break;
+    }
+}
+
+// filters plants on home page based on filters
+function showPlant(filterIndex, value) {
+    let plantList = document.getElementById("plant_list")
+    let currentPlant
+    let filterSpan;
+
+    for (let i = 3; i < plantList.childNodes.length; i++) {
+        currentPlant = plantList.childNodes.item(i);
+        filterSpan = currentPlant.childNodes.item(1).childNodes.item(3).childNodes.item(filterIndex)
+
+        if (currentPlant.style.display == "block") {
+            if (filterSpan.textContent != value && value != 0) {
+                currentPlant.style.display = "none";
+            } else if (value == 0) {
+                currentPlant.style.display = "block";
+            }
+        } else if (currentPlant.style.display == "none") {
+            if (value == 0) {
+                currentPlant.style.display = "block";
+            }
+        }
+    }
+}
+
+// Shows all plants on home page and resets the filters
+function showAllPlants() {
+    let plantList = document.getElementById("plant_list")
+
+    for (let i = 3; i < plantList.childNodes.length; i++) {
+        let currentPlant = plantList.childNodes.item(i);
+        currentPlant.style.display = "block"
+    }
+    document.getElementById("nameFil").value = 0
+    document.getElementById("leaveFil").value = 0
+    document.getElementById("flowerFil").value = 0
+    document.getElementById("fruSeeFil").value = 0
+    document.getElementById("sunFil").value = 0
+}
+
 
 const insertSyncPlantInList = (plant) => {
     console.log("INSERT SYNC PLANT")
@@ -112,31 +240,27 @@ window.onload = function () {
         navigator.serviceWorker.ready.then((sw) => {
             sw.sync.register("sync-plant")
             sw.sync.register("update-plant")
-
         }).then(() => {
             fetch('http://localhost:3000/plants')
                 .then(function (res) {
                     return res.json();
                 }).then(function (newPlants) {
-                openPlantsIDB().then((db) => {
-                    insertPlantInList(db, newPlants)
-                    deleteAllExistingPlantsFromIDB(db).then(() => {
-                        addNewPlantsToIDB(db, newPlants).then(() => {
-                            console.log("All new plants added to IDB")
-                        })
+                    openPlantsIDB().then((db) => {
+                        insertPlantInList(db, newPlants)
+                        deleteAllExistingPlantsFromIDB(db).then(() => {
+                            addNewPlantsToIDB(db, newPlants).then(() => {
+                                console.log("All new plants added to IDB")
+                            })
+                        });
                     });
-                });
-            }).catch(() => console.log("Going Offline")).then(function () {
-                console.log("HERE")
-                openPlantsIDB().then((db) => {
-                    console.log("HERE 2")
-                    getAllPlants(db).then((plants) => {
-                        console.log("HERE 3")
-                        for (const plant of plants) {
-                            insertPlantInList(plant)
-                        }
+                }).catch(() => console.log("Going Offline")).then(function () {
+                    openPlantsIDB().then((db) => {
+                        getAllPlants(db).then((plants) => {
+                            for (const plant of plants) {
+                                insertPlantInList(plant)
+                            }
+                        });
                     });
-                });
                 openSyncPlantsIDB().then((db) => {
                     getAllSyncPlants(db).then((sync_plants) => {
                         for (const sync_plant of sync_plants) {
@@ -146,9 +270,8 @@ window.onload = function () {
                 });
             })
         })
-
-
-    } else {
+    } else
+    {
         console.log("Offline mode")
         openPlantsIDB().then((db) => {
             getAllPlants(db).then((plants) => {

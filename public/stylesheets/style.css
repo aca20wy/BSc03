@@ -33,3 +33,7 @@ a {
 #plant_template {
   display: none;
 }
+
+.hiddenAttr {
+  display: none;
+}
