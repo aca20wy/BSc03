@@ -56,7 +56,8 @@
                     <div class="list-group-item"><strong>Spread:</strong> <%= plant.spread %> cm</div>
                     <div class="list-group-item"><strong>Leaves:</strong> <%= plant.leaves %></div>
                     <div class="list-group-item"><strong>Flowers:</strong> <%= plant.flowers %></div>
-                    <div class="list-group-item"><strong>Flower Colour:</strong> <%= plant.flowerColour %></div>
+                    <div class="list-group-item"><strong>Flower Colour:</strong>
+                        <span style="background-color: <%= plant.flowerColour %>; color: <%= plant.flowerColour %>"><%= plant.flowerColour %></span><%= plant.flowerColour %></div>
                     <div class="list-group-item"><strong>Fruit Seeds:</strong> <%= plant.fruitSeeds %></div>
                     <div class="list-group-item"><strong>Sun Exposure:</strong> <%= plant.sunExposure %></div>
                     <div class="list-group-item"><strong>DBPedia Links:</strong><span id="dbpediaLabel"></span><ul id="dbpedia"></ul></div>

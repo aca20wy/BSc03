@@ -40,12 +40,22 @@ const appendAlert = (message, type) => {
         `   <div>${message}</div>`,
         '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>'
     ].join('')
+}
 
-
+function colorPicker(){
+    let flowers = document.getElementById("flowers")
+    let colours = document.getElementById("flowerColour")
+    colours.disabled = flowers.value != "Yes";
 }
 
 const addNewPlantButtonEventListener = () => {
     console.log("ADD NEW PLANT")
+    let fColour
+    if (document.getElementById("flowers").value == "Yes") {
+        fColour = document.getElementById("flowerColour").value
+    } else {
+        fColour = "N/A"
+    }
 
     var plant = {
         _id: "sync",
@@ -57,7 +67,7 @@ const addNewPlantButtonEventListener = () => {
         spread: document.getElementById("spread").value,
         leaves: document.getElementById("leaves").value,
         flowers: document.getElementById("flowers").value,
-        flowerColour: document.getElementById("flowerColour").value,
+        flowerColour: fColour,
         fruitSeeds: document.getElementById("fruitSeeds").value,
         sunExposure: document.getElementById("sunExposure").value,
         location: document.getElementById("location").value,

@@ -68,28 +68,26 @@
         <div class="col-md-4">
             <div class="form-floating">
                 <select class="form-select" id="leaves" name="leaves" required>
-                    <option value="Yes" selected>Yes</option>
+                    <option value="Yes">Yes</option>
                     <option value="No">No</option>
-                    <option value="Unknown">Unknown</option>
+                    <option value="Unknown" selected>Unknown</option>
                 </select>
                 <label for="leaves">Leaves:</label>
             </div>
         </div>
         <div class="col-md-4">
             <div class="form-floating">
-                <select class="form-select" id="flowers" name="flowers" required>
-                    <option value="Yes" selected>Yes</option>
+                <select class="form-select" id="flowers" name="flowers" required onchange="colorPicker()">
+                    <option value="Yes">Yes</option>
                     <option value="No">No</option>
-                    <option value="Unknown">Unknown</option>
+                    <option value="Unknown" selected>Unknown</option>
                 </select>
                 <label for="flowers">Flowers:</label>
             </div>
         </div>
         <div class="col-md-4">
-            <div class="form-floating">
-                <input type="text" class="form-control" id="flowerColour" name="flowerColour" required>
-                <label for="flowerColour">Flower Colour:</label>
-            </div>
+            <label for="flowerColour" class="form-label">Flower Colour:</label>
+            <input type="color" class="form-control form-control-color" id="flowerColour" name="flowerColour" value="#563d7c" title="Choose flower color" required disabled>
         </div>
         <div class="col-md-6">
             <div class="form-floating">
