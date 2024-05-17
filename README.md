@@ -3,6 +3,7 @@
 
 This web application allows users to upload and view plant sightings and collaborate on plant identification using live chats. This project is developed using Node.js, Express, MongoDB, and Bootstrap, following the requirements and guidelines of the module.
 
+Repository Link: https://github.com/aca20wy/BSc03
 
 ## Installation and Running Instructions
 
@@ -19,7 +20,7 @@ You must have the following installed:
 1. **Clone the Repository**:
 
     ```sh
-    git clone https://github.com/aca20wy/BSc03.git
+    git clone <repository url>
     cd BSc03
 
 2. **Install Dependencies**:
