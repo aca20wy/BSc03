@@ -15,7 +15,7 @@ exports.init = function(io) {
         io.sockets.to(plantId).emit('chat', plantId, chatUsername, chatText);
 
         var currentDate = new Date();
-        var datetime = currentDate
+        var datetime = currentDate;
 
         let chatData = {
           plantId: plantId,

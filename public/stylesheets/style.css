@@ -1,19 +1,33 @@
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
 body {
-  padding-top: 50px;
+  display: flex;
+  flex-direction: column;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+.container {
+  flex: 1 0 auto;
+}
+
+header {
+  margin-bottom: 4rem;
+}
+
+footer {
+  flex-shrink: 0;
+  background-color: #d4a373;
+  color: #fff;
+  padding: 1rem 0;
+  width: 100%;
+  margin-top: 2rem;
 }
 
 a {
   color: #00B7FF;
-}
-
-header {
-  margin-bottom: 2rem;
-}
-
-footer {
-  margin-top: 2rem;
-  clear: both;
 }
 
 #plant_template {
