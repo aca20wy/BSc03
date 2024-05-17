@@ -14,10 +14,14 @@ exports.init = function(io) {
         console.log(`Received message from ${chatUsername} in room ${plantId}: ${chatText}`);
         io.sockets.to(plantId).emit('chat', plantId, chatUsername, chatText);
 
+        var currentDate = new Date();
+        var datetime = currentDate
+
         let chatData = {
           plantId: plantId,
           chatUsername: chatUsername,
-          chatText: chatText
+          chatText: chatText,
+          chatTime: datetime
         };
         console.log('Chat Data: ' + chatData);
         plantsController.saveChat(chatData);
@@ -28,6 +32,7 @@ exports.init = function(io) {
         console.log('someone disconnected');
       });
     } catch (e) {
+      console.log("SOCKET IO CATCH")
       console.log(e);
     }
   });

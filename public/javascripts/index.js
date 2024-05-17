@@ -1,18 +1,24 @@
 // Function to insert a plant item into the list
+
 const insertPlantInList = (plant) => {
     console.log("INSERT PLANT")
     if (plant._id !== null && plant._id !== undefined) {
         const copy = document.getElementById("plant_template").cloneNode(true)
         copy.removeAttribute("id")
         // console.log(copy.childNodes)// otherwise this will be hidden as well
-        copy.childNodes.item(1).childNodes.item(1).href = "/plant/"+plant._id //href plant page link plant-card
+        copy.childNodes.item(1).childNodes.item(1).id = plant._id //href plant page link plant-card
         copy.childNodes.item(1).childNodes.item(1).childNodes.item(1).src =  plant.img //image
         copy.childNodes.item(1).childNodes.item(1).childNodes.item(1).alt = "Image of " + plant.name //image alt text
-        copy.childNodes.item(1).childNodes.item(3).childNodes.item(1).childNodes.item(1).href = "/plant/"+plant._id //href card-body
+        //copy.childNodes.item(1).childNodes.item(3).childNodes.item(1).childNodes.item(1).href = "/plant/"+plant._id //href card-body
         copy.childNodes.item(1).childNodes.item(3).childNodes.item(1).childNodes.item(1).textContent = plant.name //plant card name
 
         // Insert sorted on string text order - ignoring case
         const plantList = document.getElementById("plant_list")
+        copy.addEventListener('click', (event) => {
+            window.location.href = "/plant"
+            localStorage.setItem('viewing_plant',copy.childNodes.item(1).childNodes.item(1).id)
+            console.log("Plant id = "+copy.childNodes.item(1).childNodes.item(1).id)
+        });
         plantList.appendChild(copy) //ADDS child at the end TODO default sort?
     }
 }
@@ -22,15 +28,44 @@ const insertSyncPlantInList = (plant) => {
     if (plant.data._id !== null && plant.data._id !== undefined) {
         const copy = document.getElementById("plant_template").cloneNode(true)
         copy.removeAttribute("id")
-        copy.childNodes.item(1).childNodes.item(1).href = "/plant/"+plant.data._id //href plant page link plant-card
+        copy.childNodes.item(1).childNodes.item(1).id = plant.id //href plant page link plant-card
         copy.childNodes.item(1).childNodes.item(1).childNodes.item(1).src =  plant.data.img //image
         copy.childNodes.item(1).childNodes.item(1).childNodes.item(1).alt = "Image of " + plant.data.name //image alt text
-        copy.childNodes.item(1).childNodes.item(3).childNodes.item(1).childNodes.item(1).href = "/plant/"+plant.data._id //href card-body
+        //copy.childNodes.item(1).childNodes.item(3).childNodes.item(1).childNodes.item(1).href = "/plant/"+plant.data._id //href card-body
         copy.childNodes.item(1).childNodes.item(3).childNodes.item(1).childNodes.item(1).textContent = plant.data.name+" (Unsynced)" //plant card name
-
+        console.log("Sync Plant id = "+copy.childNodes.item(1).childNodes.item(1).id)
         // Insert sorted on string text order - ignoring case
         const plantList = document.getElementById("plant_list")
+        copy.addEventListener('click', (event) => {
+            window.location.href = "/plant"
+            localStorage.setItem('viewing_plant',copy.childNodes.item(1).childNodes.item(1).id)
+
+        });
         plantList.appendChild(copy) //ADDS child at the end TODO default sort?
+
+    }
+}
+
+const insertUpdatePlantInList = (plant) => {
+    console.log("INSERT UPDATE PLANT")
+    if (plant.data._id !== null && plant.data._id !== undefined) {
+        const copy = document.getElementById("plant_template").cloneNode(true)
+        copy.removeAttribute("id")
+        copy.childNodes.item(1).childNodes.item(1).id = plant.id //href plant page link plant-card
+        copy.childNodes.item(1).childNodes.item(1).childNodes.item(1).src =  plant.data.img //image
+        copy.childNodes.item(1).childNodes.item(1).childNodes.item(1).alt = "Image of " + plant.data.name //image alt text
+        //copy.childNodes.item(1).childNodes.item(3).childNodes.item(1).childNodes.item(1).href = "/plant/"+plant.data._id //href card-body
+        copy.childNodes.item(1).childNodes.item(3).childNodes.item(1).childNodes.item(1).textContent = plant.data.name+" (Pending Update)" //plant card name
+        console.log("Update Plant id = "+copy.childNodes.item(1).childNodes.item(1).id)
+        // Insert sorted on string text order - ignoring case
+        const plantList = document.getElementById("plant_list")
+        copy.addEventListener('click', (event) => {
+            window.location.href = "/plant"
+            localStorage.setItem('viewing_plant',copy.childNodes.item(1).childNodes.item(1).id)
+
+        });
+        plantList.appendChild(copy) //ADDS child at the end TODO default sort?
+
     }
 }
 
@@ -74,34 +109,51 @@ window.onload = function () {
 
     if (navigator.onLine) {
         console.log("Online mode")
-        fetch('http://localhost:3000/plants')
-            .then(function (res) {
-                return res.json();
-            }).then(function (newPlants) {
-            openPlantsIDB().then((db) => {
-                insertPlantInList(db, newPlants)
-                deleteAllExistingPlantsFromIDB(db).then(() => {
-                    addNewPlantsToIDB(db, newPlants).then(() => {
-                        console.log("All new plants added to IDB")
-                    })
+        navigator.serviceWorker.ready.then((sw) => {
+            sw.sync.register("sync-plant")
+            sw.sync.register("update-plant")
+
+        }).then(() => {
+            fetch('http://localhost:3000/plants')
+                .then(function (res) {
+                    return res.json();
+                }).then(function (newPlants) {
+                openPlantsIDB().then((db) => {
+                    insertPlantInList(db, newPlants)
+                    deleteAllExistingPlantsFromIDB(db).then(() => {
+                        addNewPlantsToIDB(db, newPlants).then(() => {
+                            console.log("All new plants added to IDB")
+                        })
+                    });
                 });
-            });
-        }).catch(() => console.log("Going Offline")).then(function () {
-            openPlantsIDB().then((db) => {
-                getAllPlants(db).then((plants) => {
-                    for (const plant of plants) {
-                        insertPlantInList(plant)
-                    }
+            }).catch(() => console.log("Going Offline")).then(function () {
+                console.log("HERE")
+                openPlantsIDB().then((db) => {
+                    console.log("HERE 2")
+                    getAllPlants(db).then((plants) => {
+                        console.log("HERE 3")
+                        for (const plant of plants) {
+                            insertPlantInList(plant)
+                        }
+                    });
                 });
-            });
-            openSyncPlantsIDB().then((db) => {
-                getAllSyncPlants(db).then((sync_plants) => {
-                    for (const sync_plant of sync_plants) {
-                        insertSyncPlantInList(sync_plant)
-                    }
+                openSyncPlantsIDB().then((db) => {
+                    getAllSyncPlants(db).then((sync_plants) => {
+                        for (const sync_plant of sync_plants) {
+                            insertSyncPlantInList(sync_plant)
+                        }
+                    });
                 });
-            });
+                openUpdatePlantsIDB().then((db) => {
+                    getAllUpdatePlants(db).then((update_plants) => {
+                        for (const update_plant of update_plants) {
+                            insertUpdatePlantInList(update_plant)
+                        }
+                    });
+                });
+            })
         })
+
 
     } else {
         console.log("Offline mode")
@@ -120,6 +172,14 @@ window.onload = function () {
                 }
             });
         });
+        openUpdatePlantsIDB().then((db) => {
+            getAllUpdatePlants(db).then((update_plants) => {
+                for (const update_plant of update_plants) {
+                    insertUpdatePlantInList(update_plant)
+                }
+            });
+        });
 
     }
 }
+

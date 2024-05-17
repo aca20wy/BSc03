@@ -24,7 +24,7 @@ exports.create = function (plantData, filePath) {
         dateOfSighting: plantData.dateOfSighting,
         username: plantData.username,
 
-        suggestedNames: plantData.suggestedNames
+        chat: plantData.chat
     });
 
     // save the plant to the database and handle success/failure
@@ -55,7 +55,7 @@ exports.getAll = function () {
 exports.saveChat = function(chatData) {
     return plantModel.findByIdAndUpdate(
         chatData.plantId,
-        { $push: { chats: { chatUsername: chatData.chatUsername, chatText: chatData.chatText } } },
+        { $push: { chats: { chatUsername: chatData.chatUsername, chatText: chatData.chatText, chatTimeStamp: chatData.chatTime } } },
         { new: true, safe: true, upsert: true }
     )
         .then(updatedPlant => {

@@ -3,6 +3,10 @@
     transition: background-color 0.15s ease-in-out;
 }
 
+#chat_template {
+    display: none;
+}
+
 #saveChangesBtn:hover {
     background-color: #d4a373;
 }

@@ -12,16 +12,19 @@ self.addEventListener('install', event => {
             cache.addAll([
                 '/',
                 '/add',
+                '/plant',
                 '/manifest.json',
                 '/javascripts/index.js',
                 '/javascripts/idb-utility.js',
                 '/javascripts/chatHandler.js',
                 '/javascripts/usernameHandler.js',
                 '/javascripts/add.js',
+                '/javascripts/plant.js',
+                '/javascripts/dbpediaHandler.js',
                 '/stylesheets/style.css',
                 '/stylesheets/index.css',
+                '/stylesheets/plant.css'
             ]);
-            //TODO add images to cache?
             console.log('Service Worker: App Shell Cached');
         }
         catch{
@@ -65,7 +68,7 @@ self.addEventListener('fetch', event => {
 
 //Sync event to sync the plants
 self.addEventListener('sync', event => {
-    console.log("SYNC EVENT")
+    console.log("SYNC/UPDATE EVENT")
     if (event.tag === 'sync-plant') {
         console.log('Service Worker: Syncing new Plants');
         openSyncPlantsIDB().then((syncPostDB) => {
@@ -90,7 +93,7 @@ self.addEventListener('sync', event => {
                     formData.append("location", syncPlant.data.location);
                     formData.append("dateOfSighting", syncPlant.data.dateOfSighting);
                     formData.append("username", syncPlant.data.username);
-                    formData.append("suggestedNames", syncPlant.data.suggestedNames)
+                    formData.append("",syncPlant.data.chat)
 
 
                     // Fetch with FormData instead of JSON
@@ -109,10 +112,52 @@ self.addEventListener('sync', event => {
                             body: 'Plant synced successfully!',
                         });
 
+
                     }).catch((err) => {
                         console.error('Service Worker: Syncing new Plant: ', syncPlant.data.name, ' failed');
                     });
                 }
+
+            });
+        });
+
+    }
+    else if(event.tag === "update-plant")
+    {
+        console.log('Service Worker: Updating Plants');
+        openUpdatePlantsIDB().then((updatePostDB) => {
+            getAllUpdatePlants(updatePostDB).then((updatePlants) => {
+                for (const updatePlant of updatePlants) {
+                    console.log('Service Worker: Updating Plant: ', updatePlant.data.name);
+                    // Create a FormData object
+                    const formData = new URLSearchParams();
+
+                    // Iterate over the properties of the JSON object and append them to FormData
+                    formData.append("_id", updatePlant.data._id);
+                    formData.append("name", updatePlant.data.name);
+                    formData.append("nameStatus", updatePlant.data.nameStatus);
+
+                    // Fetch with FormData instead of JSON
+                    fetch('http://localhost:3000/update-plant', {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                    }).then(() => {
+                        console.log('Service Worker: Updating Plant: ', updatePlant.data.name, ' done');
+                        deleteUpdatePlantFromIDB(updatePostDB,updatePlant.id);
+                        console.log("here?")
+                        // Send a notification
+                        self.registration.showNotification('Plant Updated', {
+                            body: 'Plant updated successfully!',
+                        });
+
+                    }).catch((err) => {
+                        console.error('Service Worker: Updating new Plant: ', updatePlant.data.name, ' failed');
+                    });
+                }
+
             });
         });
     }

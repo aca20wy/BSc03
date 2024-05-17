@@ -24,7 +24,7 @@ router.get('/add', function(req, res,next) {
 router.post('/add-plant', function(req, res, next) {
     console.log("Received plant: "+ req.body.name)
     let plantData = req.body;
-    let filePath = plantData.img //TODO TEMP
+    let filePath = plantData.img
     plantData.username = req.body.username;
 
     plantsController.create(plantData, filePath).then(plant => {
@@ -35,21 +35,32 @@ router.post('/add-plant', function(req, res, next) {
     });
 })
 
-// router.get("/plant/:id", function(req, res, next) {
-//     let plantId = req.params.id;
-//     Plant.findById(plantId)
-//         .then(plantDetails => {
-//             if (!plantDetails) {
-//                 return res.status(404).send('Plant not found');
-//             }
-//             console.log(plantDetails.img);
-//             res.render('plant', { plant: plantDetails });
-//         })
-//         .catch(err => {
-//             console.error(err);
-//             res.status(500).send(err.message);
-//         });
-//     res.render('plant');
-// })
+router.post('/update-plant', function(req, res){
+    console.log("Updating plant: "+req.body.name)
+    let plantId = req.body._id;
+    let updatedData = {
+        name: req.body.name,
+        nameStatus: req.body.nameStatus
+    };
+    console.log(updatedData);
+
+    plantsController.editPlant(plantId, updatedData)
+        .then(editedPlant => {
+            console.log('Edited plant:', editedPlant);
+            res.status(200).send(editedPlant);
+        }).catch(err => {
+        console.error('Error editing plant:', err);
+        res.status(500).send(err);
+    });
+});
+
+router.get('/plant', function(req, res, next) {
+    res.render('plant')
+})
+
+router.get('/sync-plant', function(req, res, next) {
+    res.render('plant', )
+})
+
 
 module.exports = router;

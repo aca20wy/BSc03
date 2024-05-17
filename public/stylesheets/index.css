@@ -2,6 +2,11 @@
     height: 300px;
     object-fit: cover; /* Covers the designated area without being distorted */
 }
+
+.plant-hover {
+    cursor: pointer;
+}
+
 .container-top {
     padding-top: 2rem;
     padding-bottom: 2rem;

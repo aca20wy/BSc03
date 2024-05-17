@@ -1,5 +1,7 @@
 // Retrieve the username from local storage
 const username = localStorage.getItem('username');
+const plantId = localStorage.getItem('viewing_plant')
+
 let socket = io();
 
 /**
@@ -26,6 +28,11 @@ document.addEventListener('DOMContentLoaded', function() {
  * called when the Send button is pressed. It gets the text to send from the interface
  * and sends the message via socket
  */
+document.getElementById("chatForm").addEventListener('onsubmit', function() {
+    sendChat()
+    return false
+} )
+
 function sendChat() {
     let chatText = document.getElementById('chatText').value;
     socket.emit('chat', plantId, username, chatText);
