@@ -5,10 +5,14 @@ var file
 
 fileInput.addEventListener("change", e => {
     file = fileInput.files[0];
+    if(file == null){
+        console.log("File is null")
+        alert("Plant Image is required!");
+        this.value=""
+    }
     if(file.size>2097152) {
-        //TODO please someone make this look nice
-        console.log(file)
-        alert("file too big");
+        //console.log(file)
+        alert("Plant Image size too large!");
         this.value=""
     }
 
@@ -18,6 +22,27 @@ fileInput.addEventListener("change", e => {
     })
     reader.readAsDataURL(file)
 })
+
+
+const appendAlert = (message, type) => {
+    let alertPlaceholder = document.getElementById('liveAlertPlaceholder')
+    let wrapper = document.createElement('div')
+    alertPlaceholder.append(wrapper)
+    let alert = document.getElementById('liveAlertPlaceholder').children[0];
+    console.log(alert)
+    alert.classList.add("alert");
+    alert.classList.add(`alert-${type}`);
+    alert.classList.add("alert-dismissible");
+    alert.classList.add("fade");
+    alert.classList.add("show");
+    alert.role = "alert";
+    alert.innerHTML = [
+        `   <div>${message}</div>`,
+        '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>'
+    ].join('')
+
+
+}
 
 const addNewPlantButtonEventListener = () => {
     console.log("ADD NEW PLANT")
@@ -40,18 +65,24 @@ const addNewPlantButtonEventListener = () => {
         username: document.getElementById("username").value,
         chat: []
     }
-    openSyncPlantsIDB().then((db) => {
-        addNewPlantToSync(db, plant);
-    });
 
-    navigator.serviceWorker.ready
-        .then(function (serviceWorkerRegistration) {
-            serviceWorkerRegistration.showNotification("Plant Registration",
-                {body: "Plant added! - " + plant.name})
-                .then(r =>
-                    console.log("Notification Response")
-                )
+    if (plant.name == "" || plant.description == "" || plant.img == "" ||
+        plant.location == "" || plant.dateOfSighting == "" ) {
+        appendAlert('Warning: Please fill in all fields', 'warning')
+    } else {
+        openSyncPlantsIDB().then((db) => {
+            addNewPlantToSync(db, plant);
         });
+
+        navigator.serviceWorker.ready
+            .then(function (serviceWorkerRegistration) {
+                serviceWorkerRegistration.showNotification("Plant Registration",
+                    {body: "Plant added! - " + plant.name})
+                    .then(r =>
+                        console.log("Notification Response")
+                    )
+            });
+    }
 }
 
 window.onload = function () {

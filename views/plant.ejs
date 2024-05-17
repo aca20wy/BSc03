@@ -59,18 +59,18 @@
                     <div class="list-group-item"><strong>Flower Colour:</strong> <%= plant.flowerColour %></div>
                     <div class="list-group-item"><strong>Fruit Seeds:</strong> <%= plant.fruitSeeds %></div>
                     <div class="list-group-item"><strong>Sun Exposure:</strong> <%= plant.sunExposure %></div>
-<!--                    <a href="<%= plant.dbPediaUri %>" class="list-group-item list-group-item-action">More Info on DBPedia</a>-->
+                    <div class="list-group-item"><strong>DBPedia Links:</strong><span id="dbpediaLabel"></span><ul id="dbpedia"></ul></div>
                 </div>
             </div>
         </div>
 
-        <!-- DBPedia Section -->
+        <!-- DBPedia Section >
         <div class="row">
             <div class="col-12 dbpedia-section">
                 <h5>Additional Information</h5>
                 <p>more detailed information about this plant: <a href="<%= plant.dbPediaUri %>" class="dbpedia-link">DBPedia</a>.</p>
             </div>
-        </div>
+        </div-->
 
         <!-- Chat Section -->
         <div class="row chat-section my-4">
@@ -113,6 +113,8 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
     </script>
+
+    <script src="/javascripts/dbpediaHandler.js"></script>
     <script type="module" src="/javascripts/editPlant.js"></script>
 </body>
 </html>

@@ -14,7 +14,7 @@ let PlantSchema = new Schema(
         nameStatus: {type: String, required: true, max: 25},
         description: {type: String, required: true, max: 500},
 
-        img: {type: String},
+        img: {type: String, required: true},
 
         height: {type: Number, required: true},
         spread: {type: Number, required: true},
