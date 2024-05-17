@@ -65,7 +65,7 @@ self.addEventListener('fetch', event => {
     })("error"));
 });
 
-//Sync event to sync the plants
+//Sync event to sync the plants, chats and updated/edited plants with MongoDB
 self.addEventListener('sync', event => {
     console.log("SYNC/UPDATE EVENT")
     if (event.tag === 'sync-plant') {

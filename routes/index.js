@@ -8,6 +8,7 @@ router.get('/', function (req, res, next) {
     res.render('index', {title: 'View All Plants'})
 });
 
+/* GET all plants. */
 router.get('/plants', function(req,res,next) {
     plantsController.getAll().then(plants => {
         return res.status(200).send(plants);
@@ -17,10 +18,12 @@ router.get('/plants', function(req,res,next) {
     })
 })
 
+/* Get add page. */
 router.get('/add', function(req, res,next) {
     res.render('add', {title: "New Plant Form"})
 })
 
+/* Add Plant To MongoDB */
 router.post('/add-plant', function(req, res, next) {
     console.log("Received plant: "+ req.body.name)
     let plantData = req.body;
@@ -35,6 +38,8 @@ router.post('/add-plant', function(req, res, next) {
     });
 })
 
+
+/* Update Plant To MongoDB */
 router.post('/update-plant', function(req, res){
     console.log("Updating plant: "+req.body.name)
     let plantId = req.body._id;
@@ -54,6 +59,7 @@ router.post('/update-plant', function(req, res){
     });
 });
 
+/* Update Chat To MongoDB */
 router.post('/update-chat', function (req,res,next) {
     let chatData = {
         chatUsername: req.body.chatUsername,
@@ -66,10 +72,12 @@ router.post('/update-chat', function (req,res,next) {
     console.log('Chat saved!');
 })
 
+/* View Plant Page */
 router.get('/plant', function(req, res, next) {
     res.render('plant')
 })
 
+/* View Sync Plant Page */
 router.get('/sync-plant', function(req, res, next) {
     res.render('plant', )
 })

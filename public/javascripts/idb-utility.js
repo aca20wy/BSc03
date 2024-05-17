@@ -5,11 +5,9 @@ const addNewPlantToSync = (syncPlantIDB, plant) => {
     if (plant._id !== null && plant._id !== undefined) {
         const transaction = syncPlantIDB.transaction(["sync-plants"], "readwrite")
         const plantStore = transaction.objectStore("sync-plants")
-        console.log("ADDED PLANT")
-        console.log(plant)
         const addRequest = plantStore.add({data: plant})
         addRequest.addEventListener("success", () => {
-            console.log("Added " + "#" + addRequest.result + ": " + plant.name)
+
             const getRequest = plantStore.get(addRequest.result)
             getRequest.addEventListener("success", () => {
                 // Send a sync message to the service worker
@@ -17,7 +15,6 @@ const addNewPlantToSync = (syncPlantIDB, plant) => {
                     sw.sync.register("sync-plant")
 
                 }).then(() => {
-                    console.log("Sync registered");
                     window.location.replace('/')
                 }).catch((err) => {
                     console.log("Sync registration failed: " + JSON.stringify(err))
@@ -27,6 +24,7 @@ const addNewPlantToSync = (syncPlantIDB, plant) => {
     }
 }
 
+// Function to handle adding a new updated plant
 const addNewPlantToUpdate = (updatePlantIDB, plant) => {
     // Retrieve plant and add it to the IndexedDB
     return new Promise( (resolve, reject) => {
@@ -49,26 +47,6 @@ const addNewPlantToUpdate = (updatePlantIDB, plant) => {
                         reject(err);
                         console.log("Sync registration failed: " + JSON.stringify(err))
                     })
-                })
-            })
-        }
-    })
-
-}
-
-const addToUpdateBeforeUpdate = (updatePlantIDB, plant) => {
-    // Retrieve plant and add it to the IndexedDB
-    return new Promise( (resolve, reject) => {
-        if (plant._id !== null && plant._id !== undefined) {
-            const transaction = updatePlantIDB.transaction(["update-plants"], "readwrite")
-            const plantStore = transaction.objectStore("update-plants")
-            const addRequest = plantStore.add({data: plant})
-            addRequest.addEventListener("success", () => {
-                console.log("Added " + "#" + addRequest.result + ": " + plant.name)
-                const getRequest = plantStore.get(addRequest.result)
-                getRequest.addEventListener("success", () => {
-                    // Send a sync message to the service worker
-                    resolve();
                 })
             })
         }
@@ -112,7 +90,7 @@ const addNewPlantsToIDB = (plantIDB, plants) => {
     });
 };
 
-
+// Function to add new to plants to IndexedDB from view page
 const addNewPlantsToIDBFromView = (plantIDB, plants) => {
     return new Promise((resolve, reject) => {
         const transaction = plantIDB.transaction(["plants"], "readwrite");
@@ -146,7 +124,6 @@ const addNewPlantsToIDBFromView = (plantIDB, plants) => {
     });
 };
 
-
 // Function to remove all plants from idb
 const deleteAllExistingPlantsFromIDB = (plantIDB) => {
     //TODO change so that plants are read and added when plants in idb already exist
@@ -164,9 +141,6 @@ const deleteAllExistingPlantsFromIDB = (plantIDB) => {
         });
     });
 };
-
-
-
 
 // Function to get the plant list from the IndexedDB
 const getAllPlants = (plantIDB) => {
@@ -187,8 +161,7 @@ const getAllPlants = (plantIDB) => {
     });
 }
 
-
-// Function to get the plant list from the IndexedDB
+// Function to get the sync plant list from the IndexedDB
 const getAllSyncPlants = (syncPlantIDB) => {
     return new Promise((resolve, reject) => {
         const transaction = syncPlantIDB.transaction(["sync-plants"]);
@@ -205,6 +178,7 @@ const getAllSyncPlants = (syncPlantIDB) => {
     });
 }
 
+// Function to get the update plant list from the IndexedDB
 const getAllUpdatePlants = (updatePlantIDB) => {
     return new Promise((resolve, reject) => {
         const transaction = updatePlantIDB.transaction(["update-plants"]);
@@ -221,11 +195,11 @@ const getAllUpdatePlants = (updatePlantIDB) => {
     });
 }
 
+//Function to get a specific sync plant from the IndexedDB
 const getSyncPlant = (id, syncPlantIDB) => {
     return new Promise((resolve, reject) => {
         const transaction = syncPlantIDB.transaction(["sync-plants"]);
         const plantStore = transaction.objectStore("sync-plants");
-        console.log(id)
         const getOneRequest = plantStore.get(id);
 
         getOneRequest.addEventListener("success", () => {
@@ -238,6 +212,7 @@ const getSyncPlant = (id, syncPlantIDB) => {
     });
 }
 
+//Function to get a specific plant from the IndexedDB
 const getPlant = (id, plantIDB) => {
     return new Promise((resolve, reject) => {
         const transaction = plantIDB.transaction(["plants"]);
@@ -254,6 +229,7 @@ const getPlant = (id, plantIDB) => {
     });
 }
 
+//Function to get a specific update plant from the IndexedDB
 const getUpdatePlant = (id, updatePlantIDB) => {
     return new Promise((resolve, reject) => {
         const transaction = updatePlantIDB.transaction(["update-plants"]);
@@ -270,6 +246,7 @@ const getUpdatePlant = (id, updatePlantIDB) => {
     });
 }
 
+//Function to get delete a specific sync plant from the IndexedDB
 const deletePlantFromIDB = (plantIDB, id) => {
     const transaction = plantIDB.transaction(["plants"], "readwrite")
     const plantStore = transaction.objectStore("plants")
@@ -296,6 +273,7 @@ const deleteSyncPlantFromIDB = (syncPlantIDB, id) => {
 
 }
 
+//Function to get delete a specific update plant from the IndexedDB
 const deleteUpdatePlantFromIDB = (syncPlantIDB, id) => {
     const transaction = syncPlantIDB.transaction(["update-plants"], "readwrite")
     const plantStore = transaction.objectStore("update-plants")
@@ -306,19 +284,14 @@ const deleteUpdatePlantFromIDB = (syncPlantIDB, id) => {
 
 }
 
-//TODO FIX SO UPDATING CAN BE DONE OFFLINE
+//Update (Edit) sync plant details in IndexedDB
 const updateSyncPlant = (plant, newName, newStatus, updateSyncIDB) => {
     const transaction = updateSyncIDB.transaction(["sync-plants"], "readwrite")
     const plantStore = transaction.objectStore("sync-plants")
-    console.log("SYNC HERE")
-    console.log(plant)
+
     plant.data.name = newName
     plant.data.nameStatus = newStatus
-    console.log(plant.data.name)
-    console.log(plant.data.nameStatus)
-    console.log(plant.id)
-    console.log("FULL PLANT")
-    console.log(plant)
+
     const updateRequest = plantStore.put({data: plant.data}, {id: plant.id})
     updateRequest.addEventListener("success", () => {
         console.log("Updated " + plant.id)
@@ -328,20 +301,21 @@ const updateSyncPlant = (plant, newName, newStatus, updateSyncIDB) => {
     })
 }
 
+//Update (Edit) updated plant details in IndexedDB
+
 const updateUpdatePlant = (plant, newName, newStatus, updatePlantIDB) => {
     const transaction = updatePlantIDB.transaction(["update-plants"], "readwrite")
     const plantStore = transaction.objectStore("update-plants")
     plant.data.name = newName
     plant.data.nameStatus = newStatus
-    console.log("UPDATE HERE")
-    console.log(plant)
-    console.log(plant.id)
+
     const updateRequest = plantStore.put({data: plant.data}, {id: plant.id})
     updateRequest.addEventListener("success", () => {
         console.log("Updated " + plant.id)
     })
 }
 
+//Open plant indexedDB
 function openPlantsIDB() {
     return new Promise((resolve, reject) => {
         const request = indexedDB.open("plants", 1);
@@ -362,6 +336,7 @@ function openPlantsIDB() {
     });
 }
 
+//Open sync plant indexedDB
 function openSyncPlantsIDB() {
     return new Promise((resolve, reject) => {
         const request = indexedDB.open("sync-plants", 1);
@@ -382,6 +357,7 @@ function openSyncPlantsIDB() {
     });
 }
 
+//Open update plant indexedDB
 function openUpdatePlantsIDB() {
     return new Promise((resolve, reject) => {
         const request = indexedDB.open("update-plants", 1);
@@ -402,6 +378,7 @@ function openUpdatePlantsIDB() {
     });
 }
 
+//Open chat indexedDB
 function openChatIDB() {
     return new Promise((resolve, reject) => {
         const request = indexedDB.open("chats", 1);
@@ -422,6 +399,7 @@ function openChatIDB() {
     });
 }
 
+//Open sync chat indexedDB
 function openSyncChatIDB() {
     return new Promise((resolve, reject) => {
         const request = indexedDB.open("sync-chats", 1);
@@ -442,6 +420,7 @@ function openSyncChatIDB() {
     });
 }
 
+//get chats pending sync for existing plants
 const getPendingChats = (chatIDB) => {
     return new Promise((resolve, reject) => {
         const transaction = chatIDB.transaction(["chats"]);
@@ -460,6 +439,7 @@ const getPendingChats = (chatIDB) => {
     });
 }
 
+//get chats pending sync for sync plants
 const getPendingSyncChats = (chatIDB) => {
     return new Promise((resolve, reject) => {
         const transaction = chatIDB.transaction(["sync-chats"]);
@@ -478,6 +458,7 @@ const getPendingSyncChats = (chatIDB) => {
     });
 }
 
+//delete a specific chat from the indexedDB
 const deleteChatFromIDB = (chatIDB, id) => {
     return new Promise((resolve, reject) => {
         const transaction = chatIDB.transaction(["chats"], "readwrite")
@@ -494,12 +475,11 @@ const deleteChatFromIDB = (chatIDB, id) => {
 
 }
 
+//add a new chat to the chat IndexedDB
 const addNewChatToIDB = (chatIDB, chat) => {
-    // Retrieve plant and add it to the IndexedDB
-
+    // Retrieve chat and add it to the IndexedDB
     const transaction = chatIDB.transaction(["chats"], "readwrite")
     const plantStore = transaction.objectStore("chats")
-    console.log("ADDED CHAT")
     const addRequest = plantStore.add({data: chat})
     addRequest.addEventListener("success", () => {
         //console.log("Added " + "#" + addRequest.result + ": " + plant.name)
@@ -508,7 +488,6 @@ const addNewChatToIDB = (chatIDB, chat) => {
             // Send a sync message to the service worker
             navigator.serviceWorker.ready.then((sw) => {
                 sw.sync.register("update-chat")
-
             }).then(() => {
                 console.log("Chat registered");
             }).catch((err) => {
@@ -518,7 +497,7 @@ const addNewChatToIDB = (chatIDB, chat) => {
     })
 }
 
-
+//Delete a specific sync chat from the indexedDB
 const deleteSyncChatFromIDB = (chatIDB, id) => {
     return new Promise((resolve, reject) => {
         const transaction = chatIDB.transaction(["sync-chats"], "readwrite")
@@ -535,12 +514,12 @@ const deleteSyncChatFromIDB = (chatIDB, id) => {
 
 }
 
+//Add sync chat to sync chat indexedDB
 const addNewSyncChatToIDB = (chatIDB, chat) => {
     // Retrieve plant and add it to the IndexedDB
 
     const transaction = chatIDB.transaction(["sync-chats"], "readwrite")
     const plantStore = transaction.objectStore("sync-chats")
-    console.log("ADDED SYNC CHAT")
     const addRequest = plantStore.add({data: chat})
     addRequest.addEventListener("success", () => {
         //console.log("Added " + "#" + addRequest.result + ": " + plant.name)

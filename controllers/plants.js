@@ -1,5 +1,6 @@
 const plantModel = require('../models/plants');
 
+//Create plant
 exports.create = function (plantData, filePath) {
 
     // create a new plant instance using the provided plant data
@@ -69,6 +70,7 @@ exports.saveChat = function(chatData) {
         });
 };
 
+// update plant by updating name and nameStatus
 exports.editPlant = function(plantId, updatedData) {
     return plantModel.findByIdAndUpdate(
         plantId,
